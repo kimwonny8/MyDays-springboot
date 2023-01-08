@@ -6,14 +6,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TodoForm {
+public class UserForm {
 
     @NotEmpty(message = "내용은 필수입니다.")
-    private String item;
+    String id;
 
-    private String date;
+    @NotEmpty(message = "내용은 필수입니다.")
+    String password;
 
-    private boolean completed;
+    String name;
 
-    private String time;
+    String birth;
 }
