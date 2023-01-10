@@ -8,9 +8,10 @@ const app = createApp();
 app.use(Vuex);
 
 export const store = new Vuex.Store({
+    // state는 컴포넌트 간에 공유할 data 속성
     state: {
-        userName: storage.fetchName(),
-        todoOldestOrder: true
+        userList : storage.fetch(),
+        //userName: storage.fetchName(),
     },
     getters: getters,
     mutations: mutations

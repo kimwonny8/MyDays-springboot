@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     // 회원가입
-    @PostMapping("/user/save")
+    @RequestMapping(value = "/user/save")
     public String createJsonTodo(@Valid @RequestBody UserForm form, BindingResult bindingResult) {
         log.info("Post : user Save");
 
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     // user 목록
-    @GetMapping("/user/all")
+    @RequestMapping(value = "/user/all")
     public List<User> list() {
         log.info("Get : user List");
 
@@ -37,7 +37,7 @@ public class UserController {
     private String validation(@Valid @RequestBody UserForm form, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "user error";
+            return "bindingResult error";
         }
 
         User user = new User();

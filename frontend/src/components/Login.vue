@@ -30,7 +30,7 @@
 import signup from "./Signup.vue";
 
 export default {
-  name: "Home",
+  name: "login",
   data() {
     return {
       id: "",

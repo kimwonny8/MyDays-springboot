@@ -1,4 +1,3 @@
-<!-- 20221123 home에 있던 signup 컴포넌트 전역으로 변경함 -->
 <template>
     <div>
       <br />
@@ -32,6 +31,7 @@
       </div>
     </div>
   </template>
+
   <script>
   export default {
     name: "signup",
@@ -44,20 +44,21 @@
         birth: ""
       };
     },
+    computed: {
+      data(){
+        return this.id, this.pw, this.name, this.birth
+      }
+    },
     methods: {
-      signUp(){ // 회원가입 함수 => DB가 없으므로 로컬스토리지에 저장
-        if (this.id == "") {
-          alert("아이디를 입력해주세요.");
-        } else if (this.pw == "" || this.pwChk == "") {
-          alert("비밀번호를 입력해주세요.");
+      signUp(){
+        if (this.id == "" || this.pw == "" || this.pwChk == "" || this.name == "" || this.birth == "") {
+          alert("모든 항목을 입력해주세요.");
         } else if (this.pw !== this.pwChk ) {
           alert("비밀번호가 일치하지 않습니다.");
-        } else if (this.name == "" ) {
-          alert("이름을 입력해주세요.");
         } else {
           alert("회원가입 완료! 로그인 후 사용해주세요!");
-      
-          this.$router.go();
+          // alert(this.$store.state.userList);
+          this.$store.commit("signup", this.data);
         }
       }
     }

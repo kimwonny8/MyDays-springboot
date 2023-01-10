@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 public class UserForm {
 
-    @NotEmpty(message = "내용은 필수입니다.")
+   // @NotEmpty(message = "내용은 필수입니다.")
     String id;
 
-    @NotEmpty(message = "내용은 필수입니다.")
+ //   @NotEmpty(message = "내용은 필수입니다.")
     String password;
 
     String name;

@@ -2,20 +2,12 @@ import axios from 'axios';
 import {store} from "@/store/store";
 
 const storage = {
-    async fetch(orderState) {
-        var setState = true;
-        /* 서버 통신 */
+    async fetch() {
+        /* 서버 통신 - user 전체 정보 가져오기 */
         const arr = [];
 
-        if(orderState == undefined || orderState === null){
-            setState == true;
-        }
-        else if(orderState != null || orderState != ""){
-            setState = orderState;
-        }
-
         await axios
-            .get('/todos/' + setState)
+            .get('/user/all')
             .then(res => {
                const jsonData = res.data;
 
@@ -28,15 +20,15 @@ const storage = {
                }
             });
 
-        store.state.todoItems = arr;
+        store.state.userList = arr;
     },
-    fetchName() {
-        // 로컬 스토리지의 사용자 이름 가져오기
-        if (localStorage.getItem("userName")) {
-            const userName = localStorage.getItem("userName");
-            return userName;
-        }
-    }
+    // fetchName() {
+    //     // 로컬 스토리지의 사용자 이름 가져오기
+    //     if (localStorage.getItem("userName")) {
+    //         const userName = localStorage.getItem("userName");
+    //         return userName;
+    //     }
+    // }
 }
 
 export default storage;

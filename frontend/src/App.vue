@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <button class="goToMainBtn" ><img src="./assets/MydaysLogo.png"></button>
-    <Login />
+    <button class="goToMainBtn" ><img src="./assets/mydaysLogo.png"></button>
+    <login />
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue'
+import login from './components/Login.vue'
 
 export default {
   name: 'App',
   components: {
-    Login  
+    login  
   }
 }
 </script>
