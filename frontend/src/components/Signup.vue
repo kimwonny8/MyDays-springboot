@@ -46,7 +46,11 @@
     },
     computed: {
       data(){
-        return this.id, this.pw, this.name, this.birth
+        return {
+          id: this.id, 
+          pw: this.pw, 
+          name: this.name, 
+          birth: this.birth
       }
     },
     methods: {
