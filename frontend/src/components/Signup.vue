@@ -44,15 +44,6 @@
         birth: ""
       };
     },
-    computed: {
-      data(){
-        return {
-          id: this.id, 
-          pw: this.pw, 
-          name: this.name, 
-          birth: this.birth
-      }
-    },
     methods: {
       signUp(){
         if (this.id == "" || this.pw == "" || this.pwChk == "" || this.name == "" || this.birth == "") {
@@ -62,10 +53,15 @@
         } else {
           alert("회원가입 완료! 로그인 후 사용해주세요!");
           // alert(this.$store.state.userList);
-          this.$store.commit("signup", this.data);
+          this.$store.commit("signup", {
+              id: this.id, 
+              pw: this.pw, 
+              name: this.name, 
+              birth: this.birth
+            });       
+          }
         }
       }
-    }
   };
   </script>
   <style>

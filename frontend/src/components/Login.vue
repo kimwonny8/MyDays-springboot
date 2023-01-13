@@ -1,7 +1,7 @@
 <!-- 20221119 로그인/회원가입 페이지 작성 -->
 <template>
   <!-- 로그인 폼 -->
-  <div v-if="!goSignUp" class="loginForm">
+  <form @submit.prevent="login()" v-if="!goSignUp" class="loginForm">
     <div class="loginInput">
       <p>아이디:</p>
       <input type="text" class="input" v-model.trim="id" />
@@ -14,7 +14,7 @@
       <button @click="login" class="submitBtn">로그인</button>
       <button @click="goSignUp = !goSignUp" class="submitBtn">회원가입</button>
     </div>
-  </div>
+  </form>
 
   <!-- 회원가입폼 -->
   <div v-else class="signUpForm">
@@ -44,9 +44,22 @@ export default {
     signup
   },
   methods: {
-    login() {
-
+    async login() {
+    try {
+        const res = await axios.get('/user/login', {
+            auth: {
+                id: this.id,
+                password: this.pw
+            }
+        });
+        if (res.status === 200) {
+            alert("성공");
+        }
+    } catch (err) {
+        lert("실패");
+        //throw new Error(err)
     }
+}
   }
 };
 </script>

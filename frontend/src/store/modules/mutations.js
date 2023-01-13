@@ -1,5 +1,4 @@
 import axios from 'axios';
-import storage from "@/store/modules/storage";
 
 const signup = async (state, {id, pw, name, birth}) => {
     /* 서버 통신 */
@@ -13,27 +12,26 @@ const signup = async (state, {id, pw, name, birth}) => {
     await axios
         .post('/user/save', JSON.stringify(jsonValue))
         .then(res => {
-            alert(res.data)
+            //alert(res.data)
             if(res.data == "ok"){
-                //storage.fetch(state);
-                alert("가입 완료")
+                alert("회원가입 완료")
             } else {
-                alert("등록 실패");
+                alert("회원가입 실패");
             }
         });
 }
-// // 아이템 하나 삭제
-// const removeOneItem = (state, payload) => {
-//     /* 서버 통신 */
-//     axios
-//         .put('/todos/delete/' + payload.todoItem.id)
-//         .then(res => {
-//             if(res.data == "ok"){
-//                 storage.fetch(state);
-//             } else {
-//                 alert("삭제 실패");
-//             }
-//         });
-// }
+
+const login = async (state, id) => {
+    await axios
+        .post('/user/login', id)
+        .then(res => {
+            alert(res.data)
+            if(res.data == "ok"){
+                alert("조회 성공")
+            } else {
+                alert("조회 실패");
+            }
+        })
+}
 
 export { signup };
