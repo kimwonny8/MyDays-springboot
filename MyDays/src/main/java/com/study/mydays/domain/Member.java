@@ -1,4 +1,4 @@
-package com.study.mydays.model;
+package com.study.mydays.domain;
 
 import lombok.*;
 ;
