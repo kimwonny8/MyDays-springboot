@@ -1,0 +1,50 @@
+<template>
+    <div>
+        <h1>회원가입</h1>
+        <p>이메일: <input type="email" v-model="state.form.email"></p>
+        <p>비밀번호: <input type="password" v-model="state.form.password" id="pw"></p>
+        <p>비밀번호 확인: <input type="password" id="chkpw"></p>
+        <p>이름: <input type="text" v-model="state.form.name"></p>
+        <p>생년월일: <input type="text" v-model="state.form.birth"></p>
+        <button @click="signup()">회원가입</button>
+    </div>
+</template>
+
+<script>
+import { reactive } from "vue";
+import axios from "axios";
+import store from "@/scripts/store";
+import router from "@/scripts/router";
+
+export default {
+    setup() {
+        const state = reactive({
+            form: {
+                email: "",
+                password: "",
+                name: "",
+                birth: ""
+            },
+        })
+
+        const signup = () => {
+            if(document.getElementById("pw").value !== document.getElementById("chkpw").value){
+                alert("비밀번호 노일치");
+            }
+            else {
+
+           
+            axios.post("/api/user/signup", state.form).then((res) => {
+                //store.commit('setUser', res.data);
+                router.push({ path: "/" });
+                window.alert("회원가입에 성공하였습니다.");
+            }).catch(() => {
+                window.alert("회원가입에 실패하였습니다..");
+            });
+        }
+    }
+            return { state, signup }
+    
+}
+}
+</script>

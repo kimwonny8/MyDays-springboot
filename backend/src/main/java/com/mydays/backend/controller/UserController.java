@@ -7,6 +7,7 @@ import com.mydays.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserRepository userRepository;
-    JwtService jwtService;
 
     @PostMapping("/api/user/login")
     public int login(@RequestBody Map<String, String> params) {
@@ -29,5 +29,10 @@ public class UserController {
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("api/user/signup")
+    public void signup(){
+
     }
 }
