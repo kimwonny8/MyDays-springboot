@@ -9,22 +9,22 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be created or used by spring security
-                .and()
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/user/**").permitAll() // allow every URI, that begins with '/api/user/'
-                //.anyRequest().authenticated() // protect all other requests
+                .antMatchers("/api/user/**").permitAll()
                 .and()
-                .csrf().disable(); // disable cross site request forgery, as we don't use cookies - otherwise ALL PUT, POST, DELETE will get HTTP 403!
+                .csrf().disable()
+        ;
+
+        return http.build();
     }
 }

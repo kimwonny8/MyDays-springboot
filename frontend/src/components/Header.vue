@@ -3,7 +3,7 @@
       <router-link to="/" >HOME</router-link> |
         <router-link to="/login"  v-if="!$store.state.user.id">로그인</router-link>
         <button @click="logout()" v-else>로그아웃</button> |
-        <!-- <router-link to="/signup" >회원가입</router-link>   -->
+        <router-link to="/signup" >회원가입</router-link>  
       </div>
   </template>
   

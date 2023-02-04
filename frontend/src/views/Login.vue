@@ -6,7 +6,6 @@
         <p>비밀번호: <input type="password" v-model="state.form.password"></p>
         <button @click="login()">로그인</button>
         </div>
-        <button @click="logout()" v-else>로그아웃</button>
     </div>
 </template>
 <script>
