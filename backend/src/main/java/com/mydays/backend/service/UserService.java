@@ -2,7 +2,7 @@ package com.mydays.backend.service;
 
 import com.mydays.backend.domain.User;
 import com.mydays.backend.dto.UserForm;
-import com.mydays.backend.exception.DuplicateEmailException;
+import com.mydays.backend.exception.DuplicateException;
 import com.mydays.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class UserService {
 
     private void validateDuplicateEmail(String email) throws Exception {
         if(userRepository.existsByEmail(email)){
-            throw new DuplicateEmailException();
+            throw new DuplicateException();
         }
     }
 }

@@ -5,6 +5,8 @@
         <p>이메일: <input type="text" v-model="state.form.email"></p>
         <p>비밀번호: <input type="password" v-model="state.form.password"></p>
         <button @click="login()">로그인</button>
+        <br><br>
+        <router-link to="/signup" >회원가입</router-link>  
         </div>
     </div>
 </template>
@@ -26,11 +28,12 @@ export default {
     const login = () => {
       axios.post("/api/user/login", state.form).then((res) => {
         store.commit('setUser', res.data);
-        sessionStorage.setItem("id", res.data);
-        router.push({path: "/"});
-        window.alert("로그인하였습니다.");
+        sessionStorage.setItem("name", res.data);   
+        sessionStorage.setItem("email", state.form.email);   
+        this.$router.push('/');
+        alert("로그인하였습니다.");
       }).catch(() => {
-        window.alert("로그인 정보가 존재하지 않습니다.");
+        alert("로그인 정보가 존재하지 않습니다.");
       });
     }
 

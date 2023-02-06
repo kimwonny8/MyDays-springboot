@@ -1,9 +1,8 @@
 <template>
     <div>
-      <router-link to="/" >HOME</router-link> |
-        <router-link to="/login"  v-if="!$store.state.user.id">로그인</router-link>
-        <button @click="logout()" v-else>로그아웃</button> |
-        <router-link to="/signup" >회원가입</router-link>  
+      <router-link to="/" >HOME</router-link> 
+        <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}님 환영합니다!</p>
+        <button @click="logout()" v-if="$store.state.user.name"> 로그아웃</button> 
       </div>
   </template>
   
@@ -15,9 +14,9 @@ import router from "@/scripts/router";
     name: 'Header',
     methods:{
       logout(){
-        store.commit('setUser', 0);
+        store.commit('setUser', null);
         router.push({path: "/"});
-        sessionStorage.clear;
+        sessionStorage.clear();
     }
     }
   }

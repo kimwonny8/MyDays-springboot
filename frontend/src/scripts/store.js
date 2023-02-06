@@ -4,13 +4,14 @@ const store = createStore({
     state() {
         return {
             user: {
-                id: 0
+                email: null,
+                name: null
             }
         }
     },
     mutations: {
         setUser(state, payload){
-            state.user.id = payload;
+            state.user.name = payload;
         }
 
     }

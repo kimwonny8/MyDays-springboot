@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,22 +17,23 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value="/api/user")
 public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    @PostMapping("/api/user/login")
-    public int login(@RequestBody Map<String, String> params) {
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> params) {
         User user = userRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
         if(user != null) {
-            return user.getId();
+            return user.getName();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/api/user/signup")
+    @PostMapping("/signup")
     public void signup(@RequestBody @Valid UserForm userForm) throws Exception{
-        System.out.println("회원가입 왔어");
+//        System.out.println("회원가입 왔어");
         userService.signUpUser(userForm);
     }
 }

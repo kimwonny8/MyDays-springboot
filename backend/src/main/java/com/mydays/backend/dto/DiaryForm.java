@@ -1,14 +1,10 @@
 package com.mydays.backend.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.mydays.backend.domain.Diary;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class DiaryForm {
 
     private String email;
@@ -18,4 +14,16 @@ public class DiaryForm {
     private String photo;
     private String photo2;
     private String photo3;
+
+    public Diary toEntity(){
+        return Diary.builder()
+                .email(email)
+                .date(date)
+                .content(content)
+                .face(face)
+                .photo(photo)
+                .photo2(photo2)
+                .photo3(photo3)
+                .build();
+    }
 }

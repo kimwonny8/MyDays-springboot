@@ -18,10 +18,10 @@ export default {
     Header,
   },
   setup() {
-    const id = sessionStorage.getItem("id");
+    const name = sessionStorage.getItem("name");
     
-    if(id){
-      store.commit("setUser",id);
+    if(name){
+      store.commit("setUser",name);
     }
   }
 };
