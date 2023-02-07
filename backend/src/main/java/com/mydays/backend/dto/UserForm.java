@@ -1,5 +1,6 @@
 package com.mydays.backend.dto;
 
+import com.mydays.backend.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +22,14 @@ public class UserForm {
     @Size(max = 50, message = "이름은 50자리를 초과할 수 없습니다.")
     private String name;
     private String birth;
+
+    public User toEntity(){
+        return User.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .name(name)
+                .birth(birth)
+                .build();
+    }
 }

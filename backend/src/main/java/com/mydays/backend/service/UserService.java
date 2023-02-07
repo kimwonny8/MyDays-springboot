@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
    private final UserRepository userRepository;
     @Transactional
-    public void signUpUser(UserForm userForm) throws Exception {
-        if(userForm.getEmail() != null){
-            validateDuplicateEmail(userForm.getEmail());
-            userRepository.save(User.createUser(userForm));
+    public void signUpUser(User user) throws Exception {
+        if(user.getEmail() != null){
+            validateDuplicateEmail(user.getEmail());
+            userRepository.save(user);
         }
         else {
             throw new NullPointerException();

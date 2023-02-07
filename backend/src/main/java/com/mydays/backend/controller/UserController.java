@@ -34,6 +34,6 @@ public class UserController {
     @PostMapping("/signup")
     public void signup(@RequestBody @Valid UserForm userForm) throws Exception{
 //        System.out.println("회원가입 왔어");
-        userService.signUpUser(userForm);
+        userService.signUpUser(userForm.toEntity());
     }
 }

@@ -1,6 +1,7 @@
 package com.mydays.backend.domain;
 
 import com.mydays.backend.dto.UserForm;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,17 +30,15 @@ public class User {
 
     public User(){}
 
-    public User(UserForm userForm) {
-        this.id= userForm.getId();
-        this.email = userForm.getEmail();
-        this.password = userForm.getPassword();
-        this.name = userForm.getName();
-        this.birth = userForm.getBirth();
+    @Builder
+    public User(int id, String email, String password, String name, String birth) {
+        this.id= id;
+        this.email = email;
+        this.password =password;
+        this.name = name;
+        this.birth =birth;
     }
 
-    public static User createUser(UserForm userForm){
-        return new User(userForm);
-    }
 
 
 }

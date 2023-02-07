@@ -5,20 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 public class Diary {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int num;
+
     @Column(nullable = false, length = 100)
     private String email;
 
-    @Id
     private String date;
 
     @Column
@@ -38,7 +38,8 @@ public class Diary {
     private String photo3;
 
     @Builder
-    public Diary(String email, String date, String content, String face, String photo, String photo2, String photo3) {
+    public Diary(int num, String email, String date, String content, String face, String photo, String photo2, String photo3) {
+        this.num = num;
         this.email = email;
         this.date = date;
         this.content = content;

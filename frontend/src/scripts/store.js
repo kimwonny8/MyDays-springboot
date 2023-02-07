@@ -13,7 +13,6 @@ const store = createStore({
         setUser(state, payload){
             state.user.name = payload;
         }
-
     }
 })
 

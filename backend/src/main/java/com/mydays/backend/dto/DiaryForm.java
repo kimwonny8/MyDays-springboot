@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class DiaryForm {
 
+    private int num;
     private String email;
     private String date;
     private String content;
@@ -17,6 +18,7 @@ public class DiaryForm {
 
     public Diary toEntity(){
         return Diary.builder()
+                .num(num)
                 .email(email)
                 .date(date)
                 .content(content)
