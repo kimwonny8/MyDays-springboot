@@ -20,9 +20,9 @@ public class DiaryController {
     private final DiaryRepository diaryRepository;
     private final DiaryService diaryService;
 
-    @PostMapping("/post")
-    public String post(@RequestBody DiaryForm diaryForm){
-        return diaryService.post(diaryForm.toEntity());
+    @PostMapping("/save")
+    public String saveDiary(@RequestBody DiaryForm diaryForm){
+        return diaryService.saveDiary(diaryForm.toEntity());
     }
 
     @GetMapping("/list")
@@ -31,4 +31,42 @@ public class DiaryController {
         List<Diary> diaryList = diaryService.diaryList(params.get("email"));
         return diaryList;
     }
+
+    @GetMapping("/select/{num}")
+    public List<Diary> selectDiary(@PathVariable("num") Long num){
+//        System.out.println(params.get("num"));
+        List<Diary> diaryList = diaryService.selectDiary(num);
+        return diaryList;
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/delete/{num}")
+    public void deleteDiary(@PathVariable("num") Long num){
+        System.out.println(num);
+        diaryService.deleteDiary(num);
+    }
+
+    @PostMapping("/update/duplChk")
+    public String duplChkDate(@RequestBody Map<String, String> params){
+        String chk = diaryService.chkDiary(params.get("email"), params.get("date"));
+        return chk;
+    }
+
+    @CrossOrigin
+    @PutMapping("/update/{num}")
+    public void updateDiary(@PathVariable("num") Long num, @RequestBody DiaryForm diaryForm) throws Exception {
+        System.out.println(diaryForm);
+        diaryService.updateDiary(num, diaryForm);
+    }
+
+//    @GetMapping("/update/{num}")
+//    public ResponseEntity<?> updateDiary(@PathVariable("num") Long num, DiaryForm diaryForm){
+//        System.out.println(diaryForm);
+//        try {
+//            return new ResponseEntity<DiaryForm>(diaryService.updateDiary(num, diaryForm), HttpStatus.OK);
+//
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+//        }
+//    }
 }

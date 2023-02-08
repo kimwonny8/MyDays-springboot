@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class DiaryForm {
 
-    private int num;
+    private Long num;
     private String email;
     private String date;
     private String content;
@@ -27,5 +27,15 @@ public class DiaryForm {
                 .photo2(photo2)
                 .photo3(photo3)
                 .build();
+    }
+
+    public DiaryForm(Diary diary){
+        this.num = diary.getNum();
+        this.email = diary.getEmail();
+        this.content = diary.getContent();
+        this.face = diary.getFace();
+        this.photo = diary.getPhoto();
+        this.photo2 = diary.getPhoto2();
+        this.photo3 = diary.getPhoto3();
     }
 }

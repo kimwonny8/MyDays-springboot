@@ -7,11 +7,13 @@
                 <th>날짜</th>
                 <th>기분</th>
                 <th>내용</th>
+                <th>선택</th>
             </tr>
             <tr v-for="(value, key) in this.diaryList">
                 <td>{{ value.date }}</td>
                 <td>{{ value.face }}</td>
                 <td>{{ value.content }}</td>
+                <td><button @click="selectDiary(value.num)">읽기</button></td>
             </tr>
         </table>
     </div>
@@ -32,8 +34,8 @@ export default {
         }
     },
 
-    async created() {
-       await  axios.get("/api/diary/list", { params: { email:this.email  }})
+    created() {
+       axios.get("/api/diary/list", { params: { email:this.email  }})
             .then((res) => {
                 for(let i=0; i<res.data.length; i++){
                     //console.log(res.data[i]);
@@ -47,9 +49,14 @@ export default {
     },
 
     methods: {
-        fetchData() {
-           
-        
+        selectDiary(arg) {
+           axios.get("/api/diary/select/"+arg)
+           .then((res) => {
+                console.log(res.data[0]);
+                store.commit('setDiary', res.data[0]);
+                sessionStorage.setItem("num", store.state.diary.num)
+                this.$router.push('/selectDiary'); 
+           })
         }
     }
 

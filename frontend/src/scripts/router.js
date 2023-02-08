@@ -4,6 +4,7 @@ import Login from "@/views/Login";
 import Signup from "@/views/Signup";
 import Calendar from "@/views/Calendar";
 import Post from "@/views/Post";
+import SelectDiary from "@/views/SelectDiary"
 
 const routes = [
     {path: '/', component: Home},
@@ -11,6 +12,7 @@ const routes = [
     {path: '/signup', component: Signup},
     {path: '/calendar', component: Calendar},
     {path: '/post', component: Post},
+    {path: '/selectDiary', component: SelectDiary},
 ]
 
 const router = createRouter({

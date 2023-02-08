@@ -1,6 +1,5 @@
 package com.mydays.backend.domain;
 
-import com.mydays.backend.dto.DiaryForm;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ public class Diary {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int num;
+    private Long num;
 
     @Column(nullable = false, length = 100)
     private String email;
@@ -38,7 +37,7 @@ public class Diary {
     private String photo3;
 
     @Builder
-    public Diary(int num, String email, String date, String content, String face, String photo, String photo2, String photo3) {
+    public Diary(Long num, String email, String date, String content, String face, String photo, String photo2, String photo3) {
         this.num = num;
         this.email = email;
         this.date = date;

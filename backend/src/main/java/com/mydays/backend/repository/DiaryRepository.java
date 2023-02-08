@@ -10,5 +10,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     boolean existsByEmailAndDate(String email,String date);
 
     List<Diary> findAllByEmail(String email);
-    find
+    List<Diary> findAllByNum(Long num);
+    void deleteByNum(Long num);
 }
