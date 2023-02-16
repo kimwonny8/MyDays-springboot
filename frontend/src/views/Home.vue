@@ -11,7 +11,7 @@ import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 import login from "@/views/Login.vue";
-import calendar from "@/views/Calendar.vue";
+import calendar from "@/views/Diary.vue";
 
 export default {
     name: 'Home',

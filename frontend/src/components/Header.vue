@@ -1,7 +1,7 @@
 <template>
     <div>
-      <router-link to="/" >HOME</router-link> 
-        <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}님 환영합니다!</p>
+      <router-link to="/"><img src="../assets/mydaysLogo.png" width="200" class="logo"></router-link> 
+        <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}</p>
         <button @click="logout()" v-if="$store.state.user.name"> 로그아웃</button> 
       </div>
   </template>
@@ -21,4 +21,9 @@ import router from "@/scripts/router";
     }
   }
 </script>
+<style>
+.logo {
+  padding: 20px;
+}
+</style>
   

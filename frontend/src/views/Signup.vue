@@ -4,7 +4,7 @@
         <p>* 이메일: <input type="email" v-model="state.form.email"></p>
         <p>* 비밀번호: <input type="password" v-model="state.form.password" id="pw"></p>
         <p>* 비밀번호 확인: <input type="password" id="chkpw"></p>
-        <p>* 이름: <input type="text" v-model="state.form.name"></p>
+        <p>* 일기이름: <input type="text" v-model="state.form.name"></p>
         <p>생년월일: <input type="text" v-model="state.form.birth"></p>
         <button @click="signup()">회원가입</button>
     </div>
@@ -13,7 +13,6 @@
 <script>
 import { reactive } from "vue";
 import axios from "axios";
-import store from "@/scripts/store";
 import router from "@/scripts/router";
 
 export default {

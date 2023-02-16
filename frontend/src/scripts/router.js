@@ -5,6 +5,7 @@ import Signup from "@/views/Signup";
 import Calendar from "@/views/Calendar";
 import Post from "@/views/Post";
 import SelectDiary from "@/views/SelectDiary"
+import Diary from "@/views/Diary.vue"
 
 const routes = [
     {path: '/', component: Home},
@@ -13,6 +14,7 @@ const routes = [
     {path: '/calendar', component: Calendar},
     {path: '/post', component: Post},
     {path: '/selectDiary', component: SelectDiary},
+    {path: '/diary', component:Diary}
 ]
 
 const router = createRouter({

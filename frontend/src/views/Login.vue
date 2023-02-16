@@ -2,7 +2,7 @@
     <div>
         <h1>login</h1>
         <div v-if="!$store.state.user.id">
-        <p>이메일: <input type="text" v-model="state.form.email"></p>
+        <p>이메일: <input type="email" v-model="state.form.email"></p>
         <p>비밀번호: <input type="password" v-model="state.form.password"></p>
         <button @click="login()">로그인</button>
         <br><br>
