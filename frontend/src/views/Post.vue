@@ -37,8 +37,9 @@ export default {
             console.log(this.diaryForm);
             axios.post("/api/diary/save", this.diaryForm)
             .then(() => {
-                this.$router.push('/calendar');
-                alert("작성 완료");
+                router.push('/');
+                alert("일기가 작성되었습니다!");
+                alert
             })
             .catch(()=> {
                 alert("이미 존재하는 날짜입니다.");

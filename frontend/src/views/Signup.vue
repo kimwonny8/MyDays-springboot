@@ -1,13 +1,36 @@
 <template>
-    <div>
-        <h1>회원가입</h1>
-        <p>* 이메일: <input type="email" v-model="state.form.email"></p>
-        <p>* 비밀번호: <input type="password" v-model="state.form.password" id="pw"></p>
-        <p>* 비밀번호 확인: <input type="password" id="chkpw"></p>
-        <p>* 일기이름: <input type="text" v-model="state.form.name"></p>
-        <p>생년월일: <input type="text" v-model="state.form.birth"></p>
-        <button @click="signup()">회원가입</button>
+     <div class="signUpForm">
+        <div class="signUpFormInner">
+    <div class="signUpInput">
+      <p>아이디 :</p>
+      <input type="text" class="input" v-model="state.form.email" />
     </div>
+    <div class="signUpInput">
+      <p>비밀번호 :</p>
+      <input type="password" class="input" id="pw" v-model="state.form.password" />
+    </div>
+    <div class="signUpInput">
+      <p>비밀번호 확인 :</p>
+      <input type="password" class="input" id="chkpw" />
+    </div>
+    <div class="signUpInput">
+      <p>이름 :</p>
+      <input type="text" class="input" v-model="state.form.name" />
+    </div>
+    <div class="signUpInput">
+      <p>생년월일 :</p>
+      <input
+        type="text"
+        class="input"
+        v-model.number="state.form.birth"
+        placeholder="ex) 19970117"
+      />
+    </div>
+    <div>
+      <button class="submitBtn" @click="signup">회원가입</button>
+    </div>
+</div>
+  </div>
 </template>
 
 <script>
@@ -49,3 +72,28 @@ export default {
 }
 }
 </script>
+<style>
+*{
+    margin: 0 auto;
+}
+.signUpForm {
+  width: 350px;
+  padding: 30px;
+  border: 1px solid grey;
+
+}
+.signUpFormInner{
+    width: 90%;
+    height: 300px;
+    display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.signUpInput {
+  display: flex;
+  flex-direction: row;
+}
+.signUpInput > p {
+    width: 100px;
+}
+</style>

@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Home</h1>
         <login v-if="!$store.state.user.name"></login>
         <calendar v-else></calendar>
     </div>
@@ -10,8 +9,8 @@ import {reactive} from "vue";
 import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
-import login from "@/views/Login.vue";
-import calendar from "@/views/Diary.vue";
+import login from "@/components/Login.vue";
+import calendar from "@/components/Calendar.vue";
 
 export default {
     name: 'Home',

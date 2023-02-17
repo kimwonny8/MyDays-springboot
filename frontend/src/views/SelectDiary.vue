@@ -54,7 +54,7 @@ export default {
             console.log("ddd"+this.diaryForm);
             axios.put("/api/diary/update/"+arg, this.diaryForm)
             .then(() => {
-                this.$router.push('/calendar');
+                router.push('/calendar');
                 alert("수정 완료");
             })
             .catch(() => {
@@ -70,7 +70,7 @@ export default {
                 .then((res)=>{
                     console.log(res);
                     localStorage.clear();
-                    this.$router.push('/');
+                    router.push('/');
                     alert("삭제가 완료되었습니다.");
                 })
                 .catch((e)=>{

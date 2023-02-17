@@ -28,12 +28,11 @@ public class UserController {
         if(user != null) {
             return user.getName();
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        else throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/signup")
     public void signup(@RequestBody @Valid UserForm userForm) throws Exception{
-//        System.out.println("회원가입 왔어");
         userService.signUpUser(userForm.toEntity());
     }
 }

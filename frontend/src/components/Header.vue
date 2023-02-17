@@ -1,9 +1,10 @@
 <template>
     <div>
       <router-link to="/"><img src="../assets/mydaysLogo.png" width="200" class="logo"></router-link> 
-        <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}</p>
-        <button @click="logout()" v-if="$store.state.user.name"> 로그아웃</button> 
-      </div>
+      <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}의 나날들😊</p>
+      <button class="submitBtn" @click="logout()" v-if="$store.state.user.name"> 로그아웃</button> 
+   
+    </div>
   </template>
   
 <script>
@@ -23,7 +24,12 @@ import router from "@/scripts/router";
 </script>
 <style>
 .logo {
-  padding: 20px;
+  margin-bottom: 20px;
+}
+.calendarTop {
+  display: flex;
+  align-items: flex-end;
+  margin: 10px;
 }
 </style>
   

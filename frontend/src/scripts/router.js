@@ -1,20 +1,16 @@
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
 import Home from "@/views/Home";
-import Login from "@/views/Login";
 import Signup from "@/views/Signup";
-import Calendar from "@/views/Calendar";
 import Post from "@/views/Post";
 import SelectDiary from "@/views/SelectDiary"
-import Diary from "@/views/Diary.vue"
+import DiaryList from "@/views/DiaryList"
 
 const routes = [
     {path: '/', component: Home},
-    {path: '/login', component: Login},
     {path: '/signup', component: Signup},
-    {path: '/calendar', component: Calendar},
     {path: '/post', component: Post},
     {path: '/selectDiary', component: SelectDiary},
-    {path: '/diary', component:Diary}
+    {path: '/diaryList', component:DiaryList}
 ]
 
 const router = createRouter({

@@ -1,7 +1,19 @@
 <template>
     <div>
+       <!-- 상단 메뉴부분  -->
+      <div class="monthChange">
+        <!-- 현재 년, 달 적혀있는 div -->
+        <div class="currentYM">
+            <button class="currentYMBtn" @click="calendarData(-1)">◀</button>
+            {{ year }}년 {{ month }}월
+            <button class="currentYMBtn" @click="calendarData(1)">▶️</button>
+          </div>
+      </div>
+      <router-link to="/post" >일기 쓰기</router-link>
+      <br>
+      <router-link to="/diaryList">리스트로 보기</router-link>
       <!-- 달력부분 -->
-      <table v-if="scheduleOrDiary !== 'diary'" class="calender">
+      <table class="calender">
         <!-- 요일 day -->
         <thead>
           <th v-for="day in days" :key="day">{{ day }}</th>
@@ -23,6 +35,7 @@
               }"
             >
               <div class="oneDay">{{ day }}
+              <div v-if="chkDiary(day)" class="photoDay">{{ photo }}</div>
             </div>
             </td>
           </tr>
@@ -32,6 +45,10 @@
   </template>
   
   <script>
+  import store from "@/scripts/store";
+  import router from "@/scripts/router";
+  import axios from "axios";
+
   export default {
     name: "calendar",
     data() {
@@ -53,9 +70,22 @@
         year: 0,
         month: 0,
         today: 0,
+        diaryList: [],
+        email: sessionStorage.getItem("email"),
+        photo: null
       };
     },
     created() {
+      axios.get("/api/diary/list", { params: { email: this.email } })
+            .then((res) => {
+            for (let i = 0; i < res.data.length; i++) {
+                this.diaryList[i] = res.data[i];
+            }
+        })
+            .catch((err) => {
+            console.log(err);
+        });
+
       const date = new Date();
       this.currentYear = date.getFullYear(); // 이하 현재 년, 월 가지고 있기
       this.currentMonth = date.getMonth() + 1;
@@ -67,12 +97,34 @@
       this.name = localStorage.getItem("name");  
     },
     components: {
-
+      
     },
     computed: {
-    
+      totalDate() {
+      var date = this.year + "-0" + this.month;
+      return date;
+    }
     },
     methods: {
+      chkDiary(arg) {
+        let day = 0; 
+        if(arg<10) day="0"+arg;
+        else day=arg;
+       
+        const tmp=this.totalDate+"-"+day;
+
+        for(let i=0; i<this.diaryList.length; i++){
+            if(tmp == this.diaryList[i].date){
+              if(this.diaryList[i].photo=="") {
+                this.photo="사진이 없어용"
+              }    
+              else {
+                this.photo= this.diaryList[i].photo;
+              } 
+              return true
+          }
+        }
+      },
       // 달력 찍기
       calendarData(arg) {
         if (arg < 0) {
@@ -155,21 +207,16 @@
   <style>
   * {
     margin: 0 auto;
-    --bodyWidth: 65%;
+    --bodyWidth: 900px;
   }
-  .menu {
+  .monthChange {
     display: flex;
-    height: 13vh;
     width: var(--bodyWidth);
+    margin-bottom: 10px;
     justify-content: space-between;
   }
   .currentYM {
-    padding: 2vh 0;
     margin-left: 3vw;
-  }
-  .addEventBox {
-    padding: 2vh 0;
-    margin-right: 3vw;
   }
   .currentYMBtn {
     border: none;
@@ -181,71 +228,32 @@
   
   .calender {
     width: var(--bodyWidth);
-    border: 0.01rem solid gray;
+    border: 1px solid gray;
     border-collapse: collapse;
   }
   th {
     background-color: rgb(202, 202, 202);
-    border: 0.01rem solid gray;
+    border: 1px solid gray;
   }
   
   td {
-    border: 0.01rem solid gray;
+    border: 1px solid gray;
   }
   .colorWhite {
     color: white;
   }
   .colorBlue {
-    color: blue;
+    color: rgb(0, 0, 255);
   }
   .oneDay {
-    height: 12vh;
-    width: 8vw;
+    height: 120px;
+    width: 120px;
   }
-  
-  .addBtn {
-    font-family: "KyoboHand", "Avenir", Helvetica, Arial, sans-serif;
-    width: 10vw;
-    height: 5vh;
-    font-size: larger;
-    border: none;
-    background-color: rgb(226, 226, 226);
-    border-radius: 10px;
+  .photoDay{
+    width: 100px;
+    height: 100px;
+    padding: 5px;
   }
-  .addBtn:hover {
-    border: 0.01rem solid gray;
-    background-color: white;
-  }
-  .imgBtn {
-    border: none;
-    background-color: white;
-    width: 4vh;
-    height: auto;
-  }
-  .imgBtn:hover {
-    opacity: 0.7;
-  }
-  
-  .imgBtn > img {
-    height: 3vh;
-    object-fit: contain;
-  }
-  .inputBox{
-    text-align: center;
-    font-family: "KyoboHand", "Avenir", Helvetica, Arial, sans-serif;
-    border: none;
-    border-bottom: 0.01rem solid gray;
-    width: 10vw;
-    font-size: large;
-    height: 5vh;
-  }
-  
-  .inputBox:focus{
-    background-color: rgb(226, 226, 226);
-  }
-  
-  .thereIs {
-    background-color: rgb(255, 255, 162);
-  }
+
   </style>
   
