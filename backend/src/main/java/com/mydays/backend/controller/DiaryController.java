@@ -2,11 +2,8 @@ package com.mydays.backend.controller;
 
 import com.mydays.backend.domain.Diary;
 import com.mydays.backend.dto.DiaryForm;
-import com.mydays.backend.repository.DiaryRepository;
 import com.mydays.backend.service.DiaryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +14,6 @@ import java.util.Map;
 @RequestMapping(value="/api/diary")
 public class DiaryController {
 
-    private final DiaryRepository diaryRepository;
     private final DiaryService diaryService;
 
     @PostMapping("/save")
@@ -32,18 +28,18 @@ public class DiaryController {
         return diaryList;
     }
 
-    @GetMapping("/select/{num}")
-    public List<Diary> selectDiary(@PathVariable("num") Long num){
-//        System.out.println(params.get("num"));
-        List<Diary> diaryList = diaryService.selectDiary(num);
+    @GetMapping("/select/{diaryIdx}")
+    public List<Diary> selectDiary(@PathVariable("diaryIdx") Long diaryIdx){
+        System.out.println(diaryIdx);
+        List<Diary> diaryList = diaryService.selectDiary(diaryIdx);
         return diaryList;
     }
 
     @CrossOrigin
-    @DeleteMapping("/delete/{num}")
-    public void deleteDiary(@PathVariable("num") Long num){
-        System.out.println(num);
-        diaryService.deleteDiary(num);
+    @DeleteMapping("/delete/{diaryIdx}")
+    public void deleteDiary(@PathVariable("diaryIdx") Long diaryIdx){
+        System.out.println(diaryIdx);
+        diaryService.deleteDiary(diaryIdx);
     }
 
     @PostMapping("/update/duplChk")
@@ -53,20 +49,9 @@ public class DiaryController {
     }
 
     @CrossOrigin
-    @PutMapping("/update/{num}")
-    public void updateDiary(@PathVariable("num") Long num, @RequestBody DiaryForm diaryForm) throws Exception {
+    @PutMapping("/update/{diaryIdx}")
+    public void updateDiary(@PathVariable("diaryIdx") Long diaryIdx, @RequestBody DiaryForm diaryForm) throws Exception {
         System.out.println(diaryForm);
-        diaryService.updateDiary(num, diaryForm);
+        diaryService.updateDiary(diaryIdx, diaryForm);
     }
-
-//    @GetMapping("/update/{num}")
-//    public ResponseEntity<?> updateDiary(@PathVariable("num") Long num, DiaryForm diaryForm){
-//        System.out.println(diaryForm);
-//        try {
-//            return new ResponseEntity<DiaryForm>(diaryService.updateDiary(num, diaryForm), HttpStatus.OK);
-//
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-//        }
-//    }
 }

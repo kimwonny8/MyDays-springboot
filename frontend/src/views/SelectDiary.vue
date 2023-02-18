@@ -9,7 +9,7 @@
             <p v-if="this.diaryForm.photo2!=''">사진2: {{ this.diaryForm.photo2 }}</p>
             <p v-if="this.diaryForm.photo3!=''">사진3: {{ this.diaryForm.photo3 }}</p>
             <button @click="this.update=!!!this.update">수정</button>
-            <button @click="deleteDiary(this.num)">삭제</button>
+            <button @click="deleteDiary(this.diaryForm.diaryIdx)">삭제</button>
         </div>
 
         <!-- 수정하기 -->
@@ -21,7 +21,7 @@
             <p>사진1: <input type="text" v-model="diaryForm.photo"></p>
             <p>사진2: <input type="text" v-model="diaryForm.photo2"></p>
             <p>사진3: <input type="text" v-model="diaryForm.photo3"></p>
-            <button @click="updateDiary(this.num)">수정 완료</button>
+            <button @click="updateDiary(this.diaryIdx)">수정 완료</button>
         </div>
     </div>
 </template>
@@ -34,10 +34,9 @@ export default {
     name: 'SelectDiary',
     data() {
         return {
-            num: sessionStorage.getItem("num"),
             update: false,
             diaryForm : {
-                num: store.state.diary.num,
+                diaryIdx: sessionStorage.getItem("diaryIdx"),
                 email : sessionStorage.getItem("email"),
                 date: store.state.diary.date,
                 content: store.state.diary.content,

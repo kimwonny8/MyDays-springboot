@@ -115,7 +115,7 @@
 
         for(let i=0; i<this.diaryList.length; i++){
             if(tmp == this.diaryList[i].date){
-              if(this.diaryList[i].photo=="") {
+              if(this.diaryList[i].photo=="" || this.diaryList[i].photo==null) {
                 this.photo="사진이 없어용"
               }    
               else {

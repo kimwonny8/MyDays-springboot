@@ -10,7 +10,7 @@ const store = createStore({
                 name: null
             },
             diary: {
-                num: null,
+                diaryIdx: null,
                 date: null,
                 face: null,
                 content: null,
@@ -27,7 +27,7 @@ const store = createStore({
         },
         setDiary(state, payload){
             // state.diary = payload;
-            state.diary.num=payload.num;
+            state.diary.diaryIdx=payload.diaryIdx;
             state.diary.date=payload.date;
             state.diary.face=payload.face;
             state.diary.content=payload.content;

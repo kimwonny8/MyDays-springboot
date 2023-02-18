@@ -1,13 +1,10 @@
 <template>
     <div>
-        <h1>작성 테스트</h1>
         <p>날짜: <input type="date" v-model="diaryForm.date"></p>
         <p>내용: <input type="text" v-model="diaryForm.content"></p>
         <p>기분: <input type="radio" v-model="diaryForm.face" name="face" id="face_good" value="good"><label for="face_good">좋아요</label>
         <input type="radio" v-model="diaryForm.face" name="face" id="face_bad" value="bad"><label for="face_bad">나빠요</label></p>
-        <p>사진1: <input type="text" v-model="diaryForm.photo"></p>
-        <p>사진2: <input type="text" v-model="diaryForm.photo2"></p>
-        <p>사진3: <input type="text" v-model="diaryForm.photo2"></p>
+        <p>사진: <input type="file" @change="setImage" accept="image/*" id="diaryImage" multiple></p>
         <button @click="post()">작성 완료</button>
     </div>
 </template>
@@ -26,15 +23,32 @@ export default {
                 date: '',
                 content: '',
                 face: '',
-                photo: '',
-                photo2: '',
-                photo3: '',
+                Image: '',
             }
         }
     },
     methods: {
+        setImage(){
+            let frm = new FormData();
+            let ImageFile = document.getElementById("diaryImage");
+            console.log(ImageFile.files[0]);
+
+            frm.append("diaryImage", ImageFile.files[0]);
+            console.log(frm);
+
+            axios.post("/api/image/save", frm, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(()=>{
+                console.log("1");
+            })
+            .catch((e)=> {
+                console.log(e);
+            })
+        },
         post() {
-            console.log(this.diaryForm);
             axios.post("/api/diary/save", this.diaryForm)
             .then(() => {
                 router.push('/');

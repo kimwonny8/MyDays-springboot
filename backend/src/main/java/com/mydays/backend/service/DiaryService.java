@@ -35,15 +35,15 @@ public class DiaryService {
         return diaryList;
     }
 
-    public List<Diary> selectDiary(Long num){
-        List<Diary> diaryList = diaryRepository.findAllByNum(num);
+    public List<Diary> selectDiary(Long diaryIdx){
+        List<Diary> diaryList = diaryRepository.findAllByDiaryIdx(diaryIdx);
         return diaryList;
     }
 
     @Transactional
-    public void deleteDiary(Long num){
+    public void deleteDiary(Long diaryIdx){
         try {
-            diaryRepository.deleteByNum(num);
+            diaryRepository.deleteByDiaryIdx(diaryIdx);
             System.out.println("삭제 완료");
         }catch(Exception e){
             System.out.println(e);
@@ -58,8 +58,8 @@ public class DiaryService {
         }
     }
 
-    public boolean chkNum(Long num){
-        Optional<Diary> diary = diaryRepository.findById(num);
+    public boolean chkdiaryIdx(Long diaryIdx){
+        Optional<Diary> diary = diaryRepository.findById(diaryIdx);
 
         if(diary.isPresent()){
             return true; // 존재
@@ -70,8 +70,8 @@ public class DiaryService {
     }
 
     @Transactional
-    public void updateDiary(Long num, DiaryForm diaryForm) throws Exception {
-        if(this.chkNum(num)){
+    public void updateDiary(Long diaryIdx, DiaryForm diaryForm) throws Exception {
+        if(this.chkdiaryIdx(diaryIdx)){
             diaryRepository.save(diaryForm.toEntity());
         }
         else {

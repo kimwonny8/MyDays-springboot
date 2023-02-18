@@ -15,7 +15,7 @@
                 <td>{{ value.date }}</td>
                 <td>{{ value.face }}</td>
                 <td>{{ value.content }}</td>
-                <td><button @click="selectDiary(value.num)">읽기</button></td>
+                <td><button @click="selectDiary(value.diaryIdx)">읽기</button></td>
             </tr>
         </table>
     </div>
@@ -54,7 +54,7 @@ export default {
                 .then((res) => {
                 console.log(res.data[0]);
                 store.commit("setDiary", res.data[0]);
-                sessionStorage.setItem("num", store.state.diary.num);
+                sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
                 router.push("/selectDiary");
             });
         }
