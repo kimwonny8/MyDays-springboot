@@ -54,7 +54,7 @@ export default {
             axios.put("/api/diary/update/"+arg, this.diaryForm)
             .then(() => {
                 router.push('/calendar');
-                alert("수정 완료");
+                alert("수정이 완료되었습니다!");
             })
             .catch(() => {
                 alert("수정에 실패하였습니다.")
@@ -74,7 +74,7 @@ export default {
                 })
                 .catch((e)=>{
                     console.log(e);
-                    alert("삭제 실패");
+                    alert("삭제에 실패하였습니다.");
                 })
                
             }
