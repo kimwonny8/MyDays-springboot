@@ -14,6 +14,7 @@ const store = createStore({
                 date: null,
                 face: null,
                 content: null,
+                exercise: null,
             }
         }
     },
@@ -28,6 +29,7 @@ const store = createStore({
             state.diary.date=payload.date;
             state.diary.face=payload.face;
             state.diary.content=payload.content;
+            state.diary.exercise=payload.exercise;
         }
     }
 })

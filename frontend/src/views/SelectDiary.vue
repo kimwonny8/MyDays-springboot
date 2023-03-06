@@ -1,21 +1,31 @@
 <template>
     <div>
         <!-- 조회 및 삭제 -->
-        <div v-if="!update">
+        <div v-if="!update" class="postForm">
             <p>날짜: {{ this.diaryForm.date }}</p>
-            <p>기분: {{ this.diaryForm.face }}</p>
             <p>내용: {{ this.diaryForm.content }}</p>
-            <button @click="this.update=!!!this.update">수정</button>
-            <button @click="deleteDiary(this.diaryForm.diaryIdx)">삭제</button>
+            <p>운동: {{this.diaryForm.exercise  }}</p>
+            <p>기분: {{ this.diaryForm.face }}</p>
+            <div class="btns btns_50">
+                <button class="submitBtn" @click="this.update=!!!this.update">수정</button>
+                <button class="submitBtn" @click="deleteDiary(this.diaryForm.diaryIdx)">삭제</button>
+            </div>
         </div>
 
         <!-- 수정하기 -->
-        <div v-else>
+        <div v-else class="postForm">
             <p>날짜: <input type="date" v-model="diaryForm.date" disabled></p>
             <p>내용: <input type="text" v-model="diaryForm.content"></p>
-            <p>기분: <input type="radio" v-model="diaryForm.face" name="face" id="face_good" value="good"><label for="face_good">좋아요</label>
-            <input type="radio" v-model="diaryForm.face" name="face" id="face_bad" value="bad"><label for="face_bad">나빠요</label></p>
-            <button @click="updateDiary(this.diaryForm.diaryIdx)">수정 완료</button>
+            <p>운동: <input type="text" v-model="diaryForm.exercise"></p>
+            <div class="selectFace">
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_happy" value="행복해요"><label for="face_bad">😄</label>
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_good" value="좋아요"><label for="face_good">😊</label>
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_soso" value="그냥그래요"><label for="face_soso">😶</label>
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_hmm" value="음"><label for="face_hmm">🤔</label>
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_sad" value="슬퍼요"><label for="face_sad">😭</label>
+                <input type="radio" v-model="diaryForm.face" name="face" id="face_angry" value="화나요"><label for="face_angry">😠</label>
+            </div>
+            <button class="submitBtn" @click="updateDiary(this.diaryForm.diaryIdx)">수정 완료</button>
         </div>
     </div>
 </template>
@@ -35,7 +45,7 @@ export default {
                 date: store.state.diary.date,
                 content: store.state.diary.content,
                 face: store.state.diary.face,
-
+                exercise: store.state.diary.exercise,
             }
         }
     },
@@ -74,3 +84,8 @@ export default {
     }
 }
 </script>
+<style>
+.btns_50{
+    width: 50%;
+}
+</style>

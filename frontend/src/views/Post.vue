@@ -1,11 +1,18 @@
 <template>
-    <div>
+    <div class="postForm">
+        <h2>일기 쓰기</h2>
         <p>날짜: <input type="date" v-model="diaryForm.date"></p>
         <p>내용: <input type="text" v-model="diaryForm.content"></p>
-        <p>기분: <input type="radio" v-model="diaryForm.face" name="face" id="face_good" value="good"><label for="face_good">좋아요</label>
-        <input type="radio" v-model="diaryForm.face" name="face" id="face_bad" value="bad"><label for="face_bad">나빠요</label></p>
-        <!-- <p>사진: <input type="file" @change="setImage" accept="image/*" id="diaryImage" multiple></p> -->
-        <button @click="post()">작성 완료</button>
+        <p>운동: <input type="text" v-model="diaryForm.exercise"></p>
+        <div class="selectFace">
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_happy" value="행복해요"><label for="face_bad">😄</label>
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_good" value="좋아요"><label for="face_good">😊</label>
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_soso" value="그냥그래요"><label for="face_soso">😶</label>
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_hmm" value="음"><label for="face_hmm">🤔</label>
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_sad" value="슬퍼요"><label for="face_sad">😭</label>
+            <input type="radio" v-model="diaryForm.face" name="face" id="face_angry" value="화나요"><label for="face_angry">😠</label>
+        </div>
+        <button class="submitBtn" @click="post()">작성 완료</button>
     </div>
 </template>
 <script>
@@ -69,3 +76,21 @@ export default {
     }
 }
 </script>
+<style>
+.postForm {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 500px;
+    height: 300px;
+    border: 1px solid gray;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 5px;
+}
+.selectFace > label {
+    margin-right: 10px;
+}
+
+</style>

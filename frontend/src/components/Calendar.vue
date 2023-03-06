@@ -9,9 +9,10 @@
             <button class="currentYMBtn" @click="calendarData(1)">▶️</button>
           </div>
       </div>
-      <router-link to="/post" >일기 쓰기</router-link>
-      <br>
-      <router-link to="/diaryList">리스트로 보기</router-link>
+      <div class="menu">
+        <router-link to="/post" >일기 쓰기</router-link>
+        <router-link to="/diaryList">리스트로 보기</router-link>
+      </div>
       <!-- 달력부분 -->
       <table class="calender">
         <!-- 요일 day -->
@@ -35,7 +36,10 @@
               }"
             >
               <div class="oneDay" @click="selectDiary(day)">{{ day }}
-              <div v-if="chkDiary(day)" class="photoDay">{{ face }}</div>
+                <div v-if="chkExercise(day)" class="dayBox exerciseBox">
+                  {{ exercise }}
+                </div>
+                <div v-if="chkDiary(day)" class="dayBox">{{ face }}</div>
             </div>
             </td>
           </tr>
@@ -73,6 +77,7 @@
         diaryList: [],
         email: sessionStorage.getItem("email"),
         face: null,
+        exercise: null
       };
     },
     created() {
@@ -138,6 +143,25 @@
               }    
               else {
                 this.face= this.diaryList[i].face;
+              } 
+              return true
+          }
+        }
+      },
+      chkExercise(arg) {
+        let day = 0; 
+        if(arg<10) day="0"+arg;
+        else day=arg;
+       
+        const tmp=this.totalDate+"-"+day;
+
+        for(let i=0; i<this.diaryList.length; i++){
+            if(tmp == this.diaryList[i].date){
+              if(this.diaryList[i].exercise=="" || this.diaryList[i].exercise==null) {
+                this.exercise="X"
+              }    
+              else {
+                this.exercise= this.diaryList[i].exercise;
               } 
               return true
           }
@@ -267,11 +291,25 @@
     height: 120px;
     width: 120px;
   }
-  .photoDay{
+  .dayBox{
     width: 100px;
-    height: 100px;
+    height: 40px;
     padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
+  .exerciseBox{
+    margin-top: 5px;
+    height: 20px;
+    background-color: yellow;
+  }
+  .menu {
+    display: flex;
+    flex-direction: row;
+    width: 200px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
   </style>
   

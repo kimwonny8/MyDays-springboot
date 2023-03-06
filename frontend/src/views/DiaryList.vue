@@ -1,11 +1,13 @@
 <template>
     <div>
-        <router-link to="/post" >일기 쓰기</router-link>
-        <br>
-        <router-link to="/">달력으로 보기</router-link>
-        <div v-if="this.diaryList.length===0">
+        <div class="menu">
+            <router-link to="/post" >일기 쓰기</router-link>
+            <router-link to="/">달력으로 보기</router-link>
+        </div>
+        <div>
+        <div class="postForm" v-if="this.diaryList.length===0">
                 <p>등록된 일기가 없습니다.</p>
-            </div>
+        </div>
         <table v-else>
             <tr>
                 <th>날짜</th>
@@ -16,24 +18,25 @@
             <tr v-for="(value, key) in this.diaryList">
                 <td>{{ value.date }}</td>
                 <td>{{ value.face }}</td>
-                <td>{{ value.content }}</td>
-                <td><button @click="selectDiary(value.diaryIdx)">읽기</button></td>
+                <td>{{ sliceContent(value.content) }}</td>
+                <td class="btnTd"><button class="readBtn" @click="selectDiary(value.diaryIdx)">읽기</button></td>
             </tr>
         </table>
+    </div>
     </div>
 </template>
 <script>
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 import axios from "axios";
-import { directive } from "@babel/types";
 
 export default {
     name: "DiaryList",
     data() {
         return {
             diaryList: [],
-            email: sessionStorage.getItem("email")
+            email: sessionStorage.getItem("email"),
+            content: null
         };
     },
     created() {
@@ -58,12 +61,43 @@ export default {
                 sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
                 router.push("/selectDiary");
             });
+        },
+        sliceContent(arg){
+            if(arg!=null) {
+                if(arg.length<10){
+                    return arg;
+                }
+                else {
+                    return arg.slice(0,10)+"...";
+                }
+            }
+         
         }
     },
-    components: { directive }
 }
 
 </script>
 <style>
-
+table { 
+    width: 700px;
+    border-collapse: collapse;
+}
+th, td {
+    width: 120px;
+    padding: 5px 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+.btnTd{
+    width: 50px;
+}
+.readBtn {
+    background-color: rgb(212, 212, 212);
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+}
+.readBtn:hover {
+    background-color: white;
+}
 </style>

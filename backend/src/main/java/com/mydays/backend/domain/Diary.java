@@ -28,12 +28,16 @@ public class Diary {
     @Column(length = 10)
     private String face;
 
+    @Column
+    private String exercise;
+
     @Builder
-    public Diary(Long diaryIdx, String email, String date, String content, String face) {
+    public Diary(Long diaryIdx, String email, String date, String content, String face, String exercise) {
         this.diaryIdx = diaryIdx;
         this.email = email;
         this.date = date;
         this.content = content;
         this.face = face;
+        this.exercise = exercise;
     }
 }

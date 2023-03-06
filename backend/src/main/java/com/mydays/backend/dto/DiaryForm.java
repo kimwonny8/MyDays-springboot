@@ -12,6 +12,7 @@ public class DiaryForm {
     private String date;
     private String content;
     private String face;
+    private String exercise;
     public Diary toEntity(){
         return Diary.builder()
                 .diaryIdx(diaryIdx)
@@ -19,6 +20,7 @@ public class DiaryForm {
                 .date(date)
                 .content(content)
                 .face(face)
+                .exercise(exercise)
                 .build();
     }
 
@@ -27,5 +29,6 @@ public class DiaryForm {
         this.email = diary.getEmail();
         this.content = diary.getContent();
         this.face = diary.getFace();
+        this.exercise = diary.getExercise();
     }
 }

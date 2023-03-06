@@ -2,8 +2,8 @@ import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
 import Home from "@/views/Home";
 import Signup from "@/views/Signup";
 import Post from "@/views/Post";
-import SelectDiary from "@/views/SelectDiary"
-import DiaryList from "@/views/DiaryList"
+import SelectDiary from "@/views/SelectDiary";
+import DiaryList from "@/views/DiaryList";
 
 const routes = [
     {path: '/', component: Home},
