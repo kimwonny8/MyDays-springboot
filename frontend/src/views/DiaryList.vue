@@ -1,5 +1,7 @@
 <template>
     <div>
+        <router-link to="/post" >일기 쓰기</router-link>
+        <br>
         <router-link to="/">달력으로 보기</router-link>
         <div v-if="this.diaryList.length===0">
                 <p>등록된 일기가 없습니다.</p>
@@ -31,7 +33,6 @@ export default {
     data() {
         return {
             diaryList: [],
-            item: null,
             email: sessionStorage.getItem("email")
         };
     },

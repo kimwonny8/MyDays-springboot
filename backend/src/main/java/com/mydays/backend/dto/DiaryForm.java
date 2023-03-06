@@ -12,10 +12,6 @@ public class DiaryForm {
     private String date;
     private String content;
     private String face;
-    private String photo;
-    private String photo2;
-    private String photo3;
-
     public Diary toEntity(){
         return Diary.builder()
                 .diaryIdx(diaryIdx)
@@ -23,9 +19,6 @@ public class DiaryForm {
                 .date(date)
                 .content(content)
                 .face(face)
-                .photo(photo)
-                .photo2(photo2)
-                .photo3(photo3)
                 .build();
     }
 
@@ -34,8 +27,5 @@ public class DiaryForm {
         this.email = diary.getEmail();
         this.content = diary.getContent();
         this.face = diary.getFace();
-        this.photo = diary.getPhoto();
-        this.photo2 = diary.getPhoto2();
-        this.photo3 = diary.getPhoto3();
     }
 }

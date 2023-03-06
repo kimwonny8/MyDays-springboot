@@ -40,6 +40,13 @@ public class DiaryService {
         return diaryList;
     }
 
+    public Long selectDate(String date){
+        List<Diary> diaryList = diaryRepository.findAllByDate(date);
+        Long idx = diaryList.get(0).getDiaryIdx();
+        System.out.println(idx);
+        return idx;
+    }
+
     @Transactional
     public void deleteDiary(Long diaryIdx){
         try {

@@ -34,8 +34,8 @@
                   day === today && month === currentMonth && year === currentYear
               }"
             >
-              <div class="oneDay">{{ day }}
-              <div v-if="chkDiary(day)" class="photoDay">{{ photo }}</div>
+              <div class="oneDay" @click="selectDiary(day)">{{ day }}
+              <div v-if="chkDiary(day)" class="photoDay">{{ face }}</div>
             </div>
             </td>
           </tr>
@@ -72,7 +72,7 @@
         today: 0,
         diaryList: [],
         email: sessionStorage.getItem("email"),
-        photo: null
+        face: null,
       };
     },
     created() {
@@ -96,9 +96,6 @@
   
       this.name = localStorage.getItem("name");  
     },
-    components: {
-      
-    },
     computed: {
       totalDate() {
       var date = this.year + "-0" + this.month;
@@ -106,6 +103,27 @@
     }
     },
     methods: {
+      selectDiary(arg) {
+          let date;
+          if(arg < 10){
+            date = this.totalDate+"-0"+arg;
+          }
+          else {
+            date = this.totalDate+"-"+arg;
+          }
+         
+          console.log(date);
+            axios.get("/api/diary/select/date/" + date)
+                .then((res) => {
+                console.log(res.data[0]);
+                store.commit("setDiary", res.data[0]);
+                sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
+                router.push("/selectDiary");
+                })
+                .catch((res)=> {
+                  alert("등록된 일기가 없습니다.")
+                });
+      },
       chkDiary(arg) {
         let day = 0; 
         if(arg<10) day="0"+arg;
@@ -115,11 +133,11 @@
 
         for(let i=0; i<this.diaryList.length; i++){
             if(tmp == this.diaryList[i].date){
-              if(this.diaryList[i].photo=="" || this.diaryList[i].photo==null) {
-                this.photo="사진 없음"
+              if(this.diaryList[i].face=="" || this.diaryList[i].face==null) {
+                this.face="기분 없음"
               }    
               else {
-                this.photo= this.diaryList[i].photo;
+                this.face= this.diaryList[i].face;
               } 
               return true
           }

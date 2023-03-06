@@ -14,9 +14,6 @@ const store = createStore({
                 date: null,
                 face: null,
                 content: null,
-                photo: null,
-                photo2: null,
-                photo3: null
             }
         }
     },
@@ -31,18 +28,6 @@ const store = createStore({
             state.diary.date=payload.date;
             state.diary.face=payload.face;
             state.diary.content=payload.content;
-
-            if(payload.photo !== null || payload.photo !== ''){
-                state.diary.photo=payload.photo;
-            }
-            if(payload.photo2 !== null || payload.photo2 !== ''){
-                state.diary.photo2=payload.photo2;
-            }
-            if(payload.photo3 !== null || payload.photo3 !== ''){
-                state.diary.photo3=payload.photo3;
-            }
-            
-
         }
     }
 })

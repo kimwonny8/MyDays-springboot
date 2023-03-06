@@ -35,6 +35,13 @@ public class DiaryController {
         return diaryList;
     }
 
+    @GetMapping("/select/date/{date}")
+    public List<Diary> selectDate(@PathVariable("date") String date){
+        Long diaryIdx = diaryService.selectDate(date);
+        List<Diary> diaryList = diaryService.selectDiary(diaryIdx);
+        return diaryList;
+    }
+
     @CrossOrigin
     @DeleteMapping("/delete/{diaryIdx}")
     public void deleteDiary(@PathVariable("diaryIdx") Long diaryIdx){
