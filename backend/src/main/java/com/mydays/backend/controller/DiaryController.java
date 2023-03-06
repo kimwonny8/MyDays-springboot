@@ -4,6 +4,7 @@ import com.mydays.backend.domain.Diary;
 import com.mydays.backend.dto.DiaryForm;
 import com.mydays.backend.service.DiaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -15,13 +15,14 @@
                 <th>내용</th>
                 <th>선택</th>
             </tr>
-            <tr v-for="(value, key) in this.diaryList">
+            <tr v-for="(value, key) in this.showList">
                 <td>{{ value.date }}</td>
                 <td>{{ value.face }}</td>
                 <td>{{ sliceContent(value.content) }}</td>
                 <td class="btnTd"><button class="readBtn" @click="selectDiary(value.diaryIdx)">읽기</button></td>
             </tr>
         </table>
+        <button class="plusBtn" id="plusBtn" @click="plus()">+</button>
     </div>
     </div>
 </template>
@@ -34,19 +35,26 @@ export default {
     name: "DiaryList",
     data() {
         return {
+            showList: [],
             diaryList: [],
             email: sessionStorage.getItem("email"),
-            content: null
+            content: null,
+            pageNum: 0,
+            pageSize: 0,
         };
     },
-    created() {
-        axios.get("/api/diary/list", { params: { email: this.email } })
+    async created() {
+        await axios.get("/api/diary/list", { params: { email: this.email } })
             .then((res) => {
             for (let i = 0; i < res.data.length; i++) {
                 //console.log(res.data[i]);
                 this.diaryList[i] = res.data[i];
             }
             console.log(Object.values(this.diaryList[0]));
+            this.pageSize = this.diaryList.length / 10;
+            for(let i=0; i<10; i++){
+                this.showList[i] = this.diaryList[i];
+            }
         })
             .catch((err) => {
             console.log(err);
@@ -71,9 +79,25 @@ export default {
                     return arg.slice(0,10)+"...";
                 }
             }
-         
-        }
-    },
+        },
+        plus() {
+            this.pageNum += 1;
+            if(this.pageNum*10 > this.diaryList.length){
+                alert("마지막 페이지입니다.");
+                document.querySelector("#plusBtn").disabled = true;
+            }
+            else if(this.pageNum*10+10 > this.diaryList.length){
+                for(let i=this.pageNum*10; i<this.diaryList.length; i++){
+                    this.showList[i] = this.diaryList[i];
+                }
+            }
+            else {
+                for(let i=this.pageNum*10; i<this.pageNum*10+10; i++){
+                        this.showList[i] = this.diaryList[i];
+                    }
+            }
+        },
+    }
 }
 
 </script>
@@ -99,5 +123,18 @@ th, td {
 }
 .readBtn:hover {
     background-color: white;
+}
+.plusBtn {
+    margin-top: 10px;
+    border: none;
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+    font-size: large;
+    font-weight: bold;
+}
+.plusBtn:hover {
+    background-color: rgb(212, 212, 212);
+    color: white;
 }
 </style>
