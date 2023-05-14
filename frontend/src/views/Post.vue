@@ -16,8 +16,6 @@
     </div>
 </template>
 <script>
-import {reactive} from "vue";
-import store from "@/scripts/store";
 import router from "@/scripts/router";
 import axios from "axios";
 
@@ -34,26 +32,6 @@ export default {
         }
     },
     methods: {
-        // setImage(){
-        //     let frm = new FormData();
-        //     let ImageFile = document.getElementById("diaryImage");
-        //     console.log(ImageFile.files[0]);
-
-        //     frm.append("diaryImage", ImageFile.files[0]);
-        //     console.log(frm);
-
-        //     axios.post("/api/image/save", frm, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data'
-        //         }
-        //     })
-        //     .then(()=>{
-        //         console.log("1");
-        //     })
-        //     .catch((e)=> {
-        //         console.log(e);
-        //     })
-        // },
         post() {
             if(this.diaryForm.date == '' || this.diaryForm.date == null){
                 alert("날짜를 선택해주세요!");

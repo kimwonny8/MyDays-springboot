@@ -13,21 +13,17 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserForm {
 
-    private int userIdx;
+    private int id;
 
-    @NotEmpty(message = "이메일은 필수 입니다.")
-    @Size(max = 100, message = "이메일은 100자리를 초과할 수 없습니다.")
     private String email;
     private String password;
 
-    @NotEmpty(message = "이름은 필수 입니다.")
-    @Size(max = 50, message = "이름은 50자리를 초과할 수 없습니다.")
     private String name;
     private String birth;
 
     public User toEntity(){
         return User.builder()
-                .userIdx(userIdx)
+                .id(id)
                 .email(email)
                 .password(password)
                 .name(name)

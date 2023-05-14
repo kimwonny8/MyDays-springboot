@@ -1,6 +1,7 @@
 package com.mydays.backend.service;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -13,13 +14,13 @@ import java.util.Map;
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService {
 
-    private String secretKey = "aaafadksl@@@@#$@%^%^5464!!dsjfdsfk!!!kkkjw$@#$%?";
+    @Value("${jwt.secret-key}")
+    private String secretKey;
 
     @Override
     public String getToken(String key, Object value) {
-
         Date expTime = new Date();
-        expTime.setTime(expTime.getTime() + 1000 * 60 * 30); // 토큰 만료시간
+        expTime.setTime(expTime.getTime() + 1000 * 60 * 10); // 토큰 만료시간
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
         Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
 
@@ -30,13 +31,15 @@ public class JwtServiceImpl implements JwtService {
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);
 
-        JwtBuilder builder = Jwts.builder().setHeader(headerMap)
+        JwtBuilder builder = Jwts.builder()
+                .setHeader(headerMap)
                 .setClaims(map)
                 .setExpiration(expTime)
-                .signWith(signKey, SignatureAlgorithm.HS256);
+                .signWith(signKey);
 
         return builder.compact();
     }
+
 
     @Override
     public Claims getClaims(String token) {

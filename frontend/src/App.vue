@@ -16,11 +16,17 @@ export default {
     Header,
   },
   setup() {
-    const name = sessionStorage.getItem("name");
-    
-    if(name){
-      store.commit("setUser",name);
-    }
+    const check = () => {
+      axios.get("/api/user/check").then(({data}) => {
+        console.log(data);
+        const name = sessionStorage.getItem("name");
+          if(name){
+            store.commit("setUser",name);
+        }
+        store.commit("setUser", {"id": data || 0, "name": name });
+      })
+       
+    };
   }
 };
 </script>

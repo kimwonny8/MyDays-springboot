@@ -3,7 +3,8 @@ package com.mydays.backend.dto;
 import com.mydays.backend.domain.Diary;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class DiaryForm {
 
@@ -22,13 +23,5 @@ public class DiaryForm {
                 .face(face)
                 .exercise(exercise)
                 .build();
-    }
-
-    public DiaryForm(Diary diary){
-        this.diaryIdx = diary.getDiaryIdx();
-        this.email = diary.getEmail();
-        this.content = diary.getContent();
-        this.face = diary.getFace();
-        this.exercise = diary.getExercise();
     }
 }

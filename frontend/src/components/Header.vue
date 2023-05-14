@@ -15,7 +15,7 @@ import router from "@/scripts/router";
     name: 'Header',
     methods:{
       logout(){
-        store.commit('setUser', null);
+        store.commit('setUser', {"id": 0, "name": null});
         router.push({path: "/"});
         sessionStorage.clear();
     }

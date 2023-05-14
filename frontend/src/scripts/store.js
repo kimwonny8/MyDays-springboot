@@ -6,6 +6,7 @@ const store = createStore({
     state() {
         return {
             user: {
+                id: 0,
                 email: null,
                 name: null
             },
@@ -21,10 +22,10 @@ const store = createStore({
 
     mutations: {
         setUser(state, payload){
-            state.user.name = payload;
+            state.user.id = payload.id;
+            state.user.name = payload.name;
         },
         setDiary(state, payload){
-            // state.diary = payload;
             state.diary.diaryIdx=payload.diaryIdx;
             state.diary.date=payload.date;
             state.diary.face=payload.face;

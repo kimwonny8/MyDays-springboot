@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,8 +25,8 @@ public class DiaryController {
 
     @GetMapping("/list")
     public List<Diary> allList(@RequestParam Map<String, String> params){
-        //System.out.println(params.get("email"));
         List<Diary> diaryList = diaryService.diaryList(params.get("email"));
+        System.out.println(diaryList);
         return diaryList;
     }
 

@@ -35,6 +35,7 @@ export default {
     const login = () => {
         axios.post("/api/user/login", state.form).then((res) => {
         store.commit('setUser', res.data);
+        sessionStorage.setItem("id", res.data);
         sessionStorage.setItem("name", res.data);   
         sessionStorage.setItem("email", state.form.email);   
         router.push('/');

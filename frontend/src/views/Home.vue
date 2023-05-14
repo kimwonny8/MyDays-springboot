@@ -5,10 +5,6 @@
     </div>
 </template>
 <script>
-import {reactive} from "vue";
-import axios from "axios";
-import store from "@/scripts/store";
-import router from "@/scripts/router";
 import login from "@/components/Login.vue";
 import calendar from "@/components/Calendar.vue";
 

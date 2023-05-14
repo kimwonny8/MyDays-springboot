@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userIdx;
+    private int id;
 
     @Column(nullable = false, length = 100)
     private String email;
@@ -30,14 +30,11 @@ public class User {
     private String birth;
 
     @Builder
-    public User(int userIdx, String email, String password, String name, String birth) {
-        this.userIdx= userIdx;
+    public User(int id, String email, String password, String name, String birth) {
+        this.id = id;
         this.email = email;
-        this.password =password;
+        this.password = password;
         this.name = name;
-        this.birth =birth;
+        this.birth = birth;
     }
-
-
-
 }
