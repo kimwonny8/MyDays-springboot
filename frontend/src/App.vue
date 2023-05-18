@@ -17,7 +17,7 @@ export default {
   },
   setup() {
     const check = () => {
-      axios.get("/api/user/check").then(({data}) => {
+      axios.get("/api/v1/member/check").then(({data}) => {
         console.log(data);
         const name = sessionStorage.getItem("name");
           if(name){

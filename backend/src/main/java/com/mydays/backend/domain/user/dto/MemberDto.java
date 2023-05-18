@@ -1,19 +1,19 @@
-package com.mydays.backend.dto;
+package com.mydays.backend.domain.user.dto;
 
-import com.mydays.backend.domain.User;
+import com.mydays.backend.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserForm {
+public class MemberDto {
 
-    private int id;
+    private Long id;
 
     private String email;
     private String password;
@@ -21,13 +21,16 @@ public class UserForm {
     private String name;
     private String birth;
 
-    public User toEntity(){
-        return User.builder()
+    private List<String> roles;
+
+    public Member toEntity(){
+        return Member.builder()
                 .id(id)
                 .email(email)
                 .password(password)
                 .name(name)
                 .birth(birth)
+                .roles(roles)
                 .build();
     }
 }

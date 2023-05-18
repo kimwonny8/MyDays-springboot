@@ -33,11 +33,11 @@ export default {
     })
 
     const login = () => {
-        axios.post("/api/user/login", state.form).then((res) => {
-        store.commit('setUser', res.data);
-        sessionStorage.setItem("id", res.data);
-        sessionStorage.setItem("name", res.data);   
-        sessionStorage.setItem("email", state.form.email);   
+        axios.post("/api/v1/member", state.form)
+        .then((res) => {
+        console.log(res);
+        // store.commit('setUser', this.form.email);
+        sessionStorage.setItem("email", state.form.email);
         router.push('/');
         alert("로그인하였습니다.");
       }).catch(() => {

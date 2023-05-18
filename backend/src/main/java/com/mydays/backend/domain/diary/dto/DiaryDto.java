@@ -1,12 +1,12 @@
-package com.mydays.backend.dto;
+package com.mydays.backend.domain.diary.dto;
 
-import com.mydays.backend.domain.Diary;
+import com.mydays.backend.domain.diary.entity.Diary;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class DiaryForm {
+public class DiaryDto {
 
     private Long diaryIdx;
     private String email;

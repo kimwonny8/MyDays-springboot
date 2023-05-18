@@ -1,18 +1,16 @@
-package com.mydays.backend.service;
+package com.mydays.backend.domain.diary.service;
 
-import com.mydays.backend.domain.Diary;
-import com.mydays.backend.dto.DiaryForm;
-import com.mydays.backend.exception.DuplicateException;
-import com.mydays.backend.exception.NotFoundException;
-import com.mydays.backend.repository.DiaryRepository;
+import com.mydays.backend.domain.diary.entity.Diary;
+import com.mydays.backend.domain.diary.dto.DiaryDto;
+import com.mydays.backend.global.exception.DuplicateException;
+import com.mydays.backend.global.exception.NotFoundException;
+import com.mydays.backend.domain.diary.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -79,9 +77,9 @@ public class DiaryService {
     }
 
     @Transactional
-    public void updateDiary(Long diaryIdx, DiaryForm diaryForm) throws Exception {
+    public void updateDiary(Long diaryIdx, DiaryDto diaryDto) throws Exception {
         if(this.chkdiaryIdx(diaryIdx)){
-            diaryRepository.save(diaryForm.toEntity());
+            diaryRepository.save(diaryDto.toEntity());
         }
         else {
             throw new NotFoundException();

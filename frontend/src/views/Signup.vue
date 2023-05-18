@@ -58,8 +58,8 @@ export default {
                 alert("비밀번호가 일치하지 않습니다.");
             }
             else {
-            axios.post("/api/user/signup", state.form).then((res) => {
-                //store.commit('setUser', res.data);
+            axios.post("/api/v1/member/register", state.form)
+            .then((res) => {
                 router.push({ path: "/" });
                 window.alert("회원가입에 성공하였습니다.");
             }).catch(() => {

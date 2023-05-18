@@ -1,13 +1,11 @@
-package com.mydays.backend.controller;
+package com.mydays.backend.domain.diary.controller;
 
-import com.mydays.backend.domain.Diary;
-import com.mydays.backend.dto.DiaryForm;
-import com.mydays.backend.service.DiaryService;
+import com.mydays.backend.domain.diary.entity.Diary;
+import com.mydays.backend.domain.diary.dto.DiaryDto;
+import com.mydays.backend.domain.diary.service.DiaryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +17,8 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @PostMapping("/save")
-    public String saveDiary(@RequestBody DiaryForm diaryForm){
-        return diaryService.saveDiary(diaryForm.toEntity());
+    public String saveDiary(@RequestBody DiaryDto diaryDto){
+        return diaryService.saveDiary(diaryDto.toEntity());
     }
 
     @GetMapping("/list")
@@ -59,8 +57,8 @@ public class DiaryController {
 
     @CrossOrigin
     @PutMapping("/update/{diaryIdx}")
-    public void updateDiary(@PathVariable("diaryIdx") Long diaryIdx, @RequestBody DiaryForm diaryForm) throws Exception {
-        System.out.println(diaryForm);
-        diaryService.updateDiary(diaryIdx, diaryForm);
+    public void updateDiary(@PathVariable("diaryIdx") Long diaryIdx, @RequestBody DiaryDto diaryDto) throws Exception {
+        System.out.println(diaryDto);
+        diaryService.updateDiary(diaryIdx, diaryDto);
     }
 }
