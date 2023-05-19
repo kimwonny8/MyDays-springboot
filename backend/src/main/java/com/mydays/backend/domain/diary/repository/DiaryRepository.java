@@ -1,10 +1,8 @@
-package com.mydays.backend.repository;
+package com.mydays.backend.domain.diary.repository;
 
-import com.mydays.backend.domain.Diary;
-import org.springframework.data.domain.Page;
+import com.mydays.backend.domain.diary.entity.Diary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 
