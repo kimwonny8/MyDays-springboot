@@ -1,12 +1,12 @@
 package com.mydays.backend.domain.user.dto;
 
+import com.mydays.backend.domain.user.entity.Authority;
 import com.mydays.backend.domain.user.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,8 +20,9 @@ public class MemberDto {
 
     private String name;
     private String birth;
+    private boolean activated;
 
-    private List<String> roles;
+    private Set<Authority> authorities;
 
     public Member toEntity(){
         return Member.builder()
@@ -30,7 +31,8 @@ public class MemberDto {
                 .password(password)
                 .name(name)
                 .birth(birth)
-                .roles(roles)
+                .activated(activated)
+                .authorities(authorities)
                 .build();
     }
 }

@@ -3,24 +3,17 @@ package com.mydays.backend.domain.user.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Getter
 @Entity
-@Builder
 @NoArgsConstructor
-public class Member implements UserDetails {
+public class Member{
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -36,63 +29,25 @@ public class Member implements UserDetails {
     @Column(nullable = true, length = 50)
     private String birth;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+    @Column(name = "activated")
+    private boolean activated;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    @ManyToMany
+    @JoinTable( // JoinTable은 테이블과 테이블 사이에 별도의 조인 테이블을 만들어 양 테이블간의 연관관계를 설정 하는 방법
+            name = "member_authority",
+            joinColumns = {@JoinColumn(name = "member_id", referencedColumnName = "member_id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+    private Set<Authority> authorities;
 
     @Builder
-    public Member(Long id, String email, String password, String name, String birth, List<String> roles) {
+    public Member(Long id, String email, String password, String name, String birth, Set<Authority> authorities, boolean activated) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.birth = birth;
-        this.roles = roles;
+        this.authorities = authorities;
+        this.activated = activated;
     }
 
-    public Member hashPassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
-        return this;
-    }
-
-    public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(plainPassword, this.password);
-    }
 }
