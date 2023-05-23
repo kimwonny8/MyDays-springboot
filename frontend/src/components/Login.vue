@@ -1,52 +1,52 @@
 <template>
-    <div>
-          <!-- 로그인 폼 -->
-        <div v-if="!$store.state.user.id" class="loginForm">
-          <div class="loginInput">
-            <p>아이디:</p>
-            <input type="text" class="input" v-model.trim=" state.form.email" />
-          </div>
-          <div class="loginInput">
-            <p>비밀번호:</p>
-            <input type="password" class="input" v-model.trim=" state.form.password" />
-          </div>
-          <div class="btns">
-            <button @click="login" class="submitBtn">로그인</button>
-            <router-link to="/signup" class="submitBtn">회원가입</router-link>
-          </div>
-        </div>
+  <div>
+    <!-- 로그인 폼 -->
+    <div v-if="!$store.getters.isLogin" class="loginForm">
+      <div class="loginInput">
+        <p>아이디:</p>
+        <input type="text" class="input" v-model.trim="form.email" />
+      </div>
+      <div class="loginInput">
+        <p>비밀번호:</p>
+        <input type="password" class="input" v-model.trim="form.password" />
+      </div>
+      <div class="btns">
+        <button @click="login()" class="submitBtn">로그인</button>
+        <router-link to="/signup" class="submitBtn">회원가입</router-link>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-import {reactive} from "vue";
+import { reactive } from "vue";
 import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 
 export default {
-  setup() {
-    const state = reactive({
+  data() {
+    return{
       form: {
         email: "",
         password: ""
       }
-    })
-
-    const login = () => {
-        axios.post("/api/v1/member", state.form)
-        .then((res) => {
-        console.log(res);
-        // store.commit('setUser', this.form.email);
-        sessionStorage.setItem("email", state.form.email);
-        router.push('/');
-        alert("로그인하였습니다.");
-      }).catch(() => {
-        alert("로그인 정보가 존재하지 않습니다.");
-      });
     }
-
-    return {state, login}
+  },
+  methods: {
+    login() {
+      axios.post("/api/v1/member", this.form)
+        .then((res) => {
+          store.commit("setRefreshToken", res.data.refreshToken);
+          store.commit("setAccessToken", res.data.accessToken);
+          sessionStorage.setItem("email", this.form.email);
+          router.push('/');
+          alert("로그인하였습니다.");
+        }).catch(() => {
+          alert("로그인 정보가 존재하지 않습니다.");
+        });
+    }
   }
+
 }
 </script>
 <style>
@@ -72,7 +72,7 @@ export default {
   font-size: large;
 }
 
-.loginInput > p {
+.loginInput>p {
   width: 50%;
 }
 
@@ -81,13 +81,15 @@ export default {
   width: 200px;
   border: none;
   border-bottom: 1px solid gray;
-  font-family: 'KyoboHand','Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'KyoboHand', 'Avenir', Helvetica, Arial, sans-serif;
 }
+
 .btns {
   margin-top: 10px;
   width: 70%;
   display: flex;
 }
+
 .submitBtn {
   font-family: "KyoboHand";
   font-size: large;
@@ -103,6 +105,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .submitBtn:hover {
   border: 1px solid gray;
   background-color: white;

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <login v-if="!$store.state.user.name"></login>
+        <login v-if="!$store.getters.isLogin"></login>
         <calendar v-else></calendar>
     </div>
 </template>

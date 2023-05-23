@@ -11,31 +11,31 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value="/api/diary")
+@RequestMapping(value="/api/v1/diary")
 public class DiaryController {
 
     private final DiaryService diaryService;
 
-    @PostMapping("/save")
+    @PostMapping("")
     public String saveDiary(@RequestBody DiaryDto diaryDto){
         return diaryService.saveDiary(diaryDto.toEntity());
     }
 
-    @GetMapping("/list")
-    public List<Diary> allList(@RequestParam Map<String, String> params){
-        List<Diary> diaryList = diaryService.diaryList(params.get("email"));
-        System.out.println(diaryList);
+    @GetMapping("")
+    public List<Diary> allList(@RequestParam("email") String email){
+        List<Diary> diaryList = diaryService.diaryList(email);
         return diaryList;
+
     }
 
-    @GetMapping("/select/{diaryIdx}")
+    @GetMapping("/{diaryIdx}")
     public List<Diary> selectDiary(@PathVariable("diaryIdx") Long diaryIdx){
         System.out.println(diaryIdx);
         List<Diary> diaryList = diaryService.selectDiary(diaryIdx);
         return diaryList;
     }
 
-    @GetMapping("/select/date/{date}")
+    @GetMapping("/date/{date}")
     public List<Diary> selectDate(@PathVariable("date") String date){
         Long diaryIdx = diaryService.selectDate(date);
         List<Diary> diaryList = diaryService.selectDiary(diaryIdx);
@@ -43,7 +43,7 @@ public class DiaryController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/delete/{diaryIdx}")
+    @DeleteMapping("/{diaryIdx}")
     public void deleteDiary(@PathVariable("diaryIdx") Long diaryIdx){
         System.out.println(diaryIdx);
         diaryService.deleteDiary(diaryIdx);
@@ -56,9 +56,10 @@ public class DiaryController {
     }
 
     @CrossOrigin
-    @PutMapping("/update/{diaryIdx}")
+    @PutMapping("/{diaryIdx}")
     public void updateDiary(@PathVariable("diaryIdx") Long diaryIdx, @RequestBody DiaryDto diaryDto) throws Exception {
         System.out.println(diaryDto);
         diaryService.updateDiary(diaryIdx, diaryDto);
     }
+
 }
