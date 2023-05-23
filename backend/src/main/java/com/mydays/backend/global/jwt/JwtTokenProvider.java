@@ -1,6 +1,9 @@
 package com.mydays.backend.global.jwt;
 
 import com.mydays.backend.domain.user.dto.LoginResponseDto;
+import com.mydays.backend.domain.user.entity.Authority;
+import com.mydays.backend.domain.user.entity.Member;
+import com.mydays.backend.domain.user.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -13,20 +16,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 public class JwtTokenProvider {
 
+    private final MemberRepository memberRepository;
     private final Key key;
+    private final int DATE = 5000;
 
-    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -38,7 +44,7 @@ public class JwtTokenProvider {
 
         long now = System.currentTimeMillis();
 
-        Date accessTokenExpiresIn = new Date(now + 7200000);
+        Date accessTokenExpiresIn = new Date(now + DATE);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -57,6 +63,33 @@ public class JwtTokenProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Transactional
+    public String generateAccessToken(String refreshToken) {
+        String accessToken = null;
+
+        Member member = getMemberByRefreshToken(refreshToken);
+        if (member != null) {
+            String username = member.getEmail();
+            List<GrantedAuthority> authorities = member.getAuthorities().stream()
+                    .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
+                    .collect(Collectors.toList());
+
+            Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + DATE);
+            String newAccessToken = Jwts.builder()
+                    .setSubject(username)
+                    .claim("auth", authorities.stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList()))
+                    .setExpiration(accessTokenExpiresIn)
+                    .signWith(key, SignatureAlgorithm.HS256)
+                    .compact();
+
+            accessToken = newAccessToken;
+        }
+
+        return accessToken;
     }
 
     public Authentication getAuthentication(String accessToken) {
@@ -98,4 +131,21 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+
+    public boolean validateRefreshToken(String refreshToken) {
+        Optional<Member> memberOptional = memberRepository.findByRefreshToken(refreshToken);
+        return memberOptional.isPresent() && memberOptional.get().getRefreshToken().equals(refreshToken);
+    }
+
+
+    public Member getMemberByRefreshToken(String refreshToken) {
+        Optional<Member> memberOptional = memberRepository.findByRefreshToken(refreshToken);
+        if (memberOptional.isPresent()) {
+            return memberOptional.get();
+        } else {
+            throw new RuntimeException("멤버를 찾을 수 없습니다.");
+        }
+    }
+
+
 }

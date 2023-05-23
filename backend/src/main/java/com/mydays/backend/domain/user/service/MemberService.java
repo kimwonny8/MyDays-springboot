@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -39,6 +40,11 @@ public class MemberService {
         Authentication auth = authenticationManagerBuilder.getObject().authenticate(authToken);
 
         LoginResponseDto loginResponseDto = jwtTokenProvider.generateToken(auth);
+
+        Member member = memberRepository.findByEmail(dto.getEmail())
+                .orElseThrow(()->new RuntimeException());
+        member.updateToken(email, loginResponseDto.getRefreshToken());
+        memberRepository.save(member);
 
         return loginResponseDto;
     }

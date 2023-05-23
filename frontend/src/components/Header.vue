@@ -2,7 +2,7 @@
     <div>
       <router-link to="/"><img src="../assets/mydaysLogo.png" width="200" class="logo"></router-link> 
       <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}의 나날들😊</p>
-      <button class="submitBtn" @click="logout()" v-if="$store.state.user.name"> 로그아웃</button> 
+      <!-- <button class="submitBtn" @click="logout()" v-if="$store.state.user.name"> 로그아웃</button>  -->
    
     </div>
   </template>
@@ -15,6 +15,8 @@ import router from "@/scripts/router";
     name: 'Header',
     methods:{
       logout(){
+        store.commit('setRefreshtoken', null);
+        store.commit('setAccessToken', null);
         store.commit('setUser', {"id": 0, "name": null});
         router.push({path: "/"});
         sessionStorage.clear();

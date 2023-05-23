@@ -28,6 +28,7 @@ public class MemberController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER,"Bearer "+loginResponseDto.getAccessToken());
+
         return loginResponseDto;
     }
 
@@ -36,4 +37,5 @@ public class MemberController {
         memberService.register(dto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 }

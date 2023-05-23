@@ -15,4 +15,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findOneWithAuthoritiesByEmail(String email); // user를 기준으로 유저를 조회할 때 권한정보도 가져온다.
 
 
+    Optional<Member> findByRefreshToken(String refreshToken);
 }
