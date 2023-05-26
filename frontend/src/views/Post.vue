@@ -1,9 +1,9 @@
 <template>
   <div class="postForm">
     <h2>일기 쓰기</h2>
-    <p>날짜: <input type="date" v-model="diaryForm.date"></p>
-    <p>내용: <input type="text" v-model="diaryForm.content"></p>
-    <p>운동: <input type="text" v-model="diaryForm.exercise"></p>
+    <p>날짜: <input type="date" v-model="diaryForm.date" class="diary_date"></p>
+    <p>내용: <input type="text" v-model="diaryForm.content" class="diary_text"></p>
+    <p>운동: <input type="text" v-model="diaryForm.exercise" class="diary_text"></p>
     <div class="selectFace">
       <input type="radio" v-model="diaryForm.face" name="face" id="face_happy" value="행복해요"><label
         for="face_bad">😄</label>
@@ -28,8 +28,8 @@ export default {
   data() {
     return {
       diaryForm: {
-        email: sessionStorage.getItem("email"),
-        date: '',
+        email: this.$store.state.user.email,
+        date: new Date().toISOString().substring(0, 10),
         content: '',
         face: '',
       }
@@ -59,7 +59,7 @@ export default {
               console.log("토큰 가져오기 실패");
             }
           } else {
-            alert("오류가 발생했습니다.");
+            alert("선택된 날짜에 이미 일기가 작성되어있습니다.");
           }
         }
       }
@@ -68,6 +68,9 @@ export default {
 }
 </script>
 <style>
+* {
+  font-family: 'KyoboHand', 'Avenir', Helvetica, Arial, sans-serif;
+}
 .postForm {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -83,5 +86,24 @@ export default {
 
 .selectFace>label {
   margin-right: 10px;
+}
+.diary_date{
+  width: 130px;
+  height: 30px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  padding-right: 10px;
+}
+
+.diary_text {
+  width: 250px;
+  height: 30px;
+  font-size: 15px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
 }
 </style>

@@ -1,9 +1,8 @@
 <template>
     <div>
       <router-link to="/"><img src="../assets/mydaysLogo.png" width="200" class="logo"></router-link> 
-      <p v-if="$store.state.user.name !== null">{{ $store.state.user.name }}의 나날들😊</p>
-      <!-- <button class="submitBtn" @click="logout()" v-if="$store.state.user.name"> 로그아웃</button>  -->
-   
+      <p v-if="$store.getters.isLogin">{{ $store.state.user.email }}의 나날들😊</p>
+      <button class="submitBtn" @click="logout()" v-if="$store.getters.isLogin" > 로그아웃</button> 
     </div>
   </template>
   
@@ -18,6 +17,7 @@ import router from "@/scripts/router";
         store.commit('setRefreshtoken', null);
         store.commit('setAccessToken', null);
         store.commit('setUser', {"id": 0, "name": null});
+        alert('로그아웃 되었습니다.');
         router.push({path: "/"});
         sessionStorage.clear();
     }

@@ -1,9 +1,8 @@
 package com.mydays.backend.global.config;
 
-import com.mydays.backend.global.jwt.filter.JwtAccessDeniedHandler;
-import com.mydays.backend.global.jwt.filter.JwtAuthenticationEntryPoint;
-import com.mydays.backend.global.jwt.JwtTokenProvider;
-import com.mydays.backend.global.jwt.filter.JwtAuthenticationFilter;
+import com.mydays.backend.global.security.jwt.filter.JwtAccessDeniedHandler;
+import com.mydays.backend.global.security.jwt.filter.JwtAuthenticationEntryPoint;
+import com.mydays.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -37,43 +37,16 @@ export default {
     return {
       showList: [],
       diaryList: [],
-      email: sessionStorage.getItem("email"),
+      email: this.$store.state.user.email,
       content: null,
       pageNum: 0,
       pageSize: 0,
-      headers: {
-        'Authorization': `Bearer ${this.$store.state.accessToken}`
-      }
     };
   },
   async created() {
-    await axios.get("/api/v1/diary", { params: { email: this.email }, headers: this.headers })
-      .then((res) => {
-        this.showList = []; // 배열 초기화
-        this.diaryList = res.data;
-        this.pageSize = Math.ceil(this.diaryList.length / 10); // 페이지 개수 계산
-        for (let i = 0; i < 10; i++) {
-          if (i < this.diaryList.length) {
-            this.showList.push(this.diaryList[i]);
-          }
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await this.getDiary();
   },
-
   methods: {
-    selectDiary(arg) {
-      console.log(arg);
-      axios.get("/api/v1/diary/" + arg, { headers: this.headers })
-        .then((res) => {
-          console.log(res.data[0]);
-          store.commit("setDiary", res.data[0]);
-          sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
-          router.push("/selectDiary");
-        });
-    },
     sliceContent(arg) {
       if (arg != null) {
         if (arg.length < 10) {
@@ -98,6 +71,56 @@ export default {
       else {
         for (let i = this.pageNum * 10; i < this.pageNum * 10 + 10; i++) {
           this.showList[i] = this.diaryList[i];
+        }
+      }
+    },
+    async getDiary() {
+      try {
+        const res = await axios.get("/api/v1/diary", {
+          params: { email: this.email },
+          headers: this.$store.getters.headers
+        })
+        this.showList = [];
+        this.diaryList = res.data;
+        this.pageSize = Math.ceil(this.diaryList.length / 10);
+        for (let i = 0; i < 10; i++) {
+          if (i < this.diaryList.length) {
+            this.showList.push(this.diaryList[i]);
+          }
+        }
+      }
+      catch (err) {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          try {
+            await this.$store.dispatch('getAccessToken');
+            await this.getDiary();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      };
+    },
+
+    async selectDiary(arg) {
+      try {
+        const res = await axios.get("/api/v1/diary/" + arg, {
+          headers: this.$store.getters.headers
+        });
+        console.log(res.data[0]);
+        store.commit("setDiary", res.data[0]);
+        sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
+        router.push("/selectDiary");
+      }
+      catch (err) {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          try {
+            await this.$store.dispatch('getAccessToken');
+            await this.selectDiary(arg);
+          } catch (err) {
+            console.log(err);
+          }
         }
       }
     },

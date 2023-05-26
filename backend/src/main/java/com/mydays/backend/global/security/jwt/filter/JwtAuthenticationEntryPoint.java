@@ -1,4 +1,4 @@
-package com.mydays.backend.global.jwt.filter;
+package com.mydays.backend.global.security.jwt.filter;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

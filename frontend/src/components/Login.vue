@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import { reactive } from "vue";
 import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
@@ -33,12 +32,14 @@ export default {
     }
   },
   methods: {
-    login() {
-      axios.post("/api/v1/member", this.form)
+    async login() {
+      await axios.post("/api/v1/member", this.form)
         .then((res) => {
           store.commit("setRefreshToken", res.data.refreshToken);
           store.commit("setAccessToken", res.data.accessToken);
-          sessionStorage.setItem("email", this.form.email);
+          // sessionStorage.setItem("email", this.form.email);
+          store.commit("setUser", this.form.email);
+
           router.push('/');
           alert("로그인하였습니다.");
         }).catch(() => {

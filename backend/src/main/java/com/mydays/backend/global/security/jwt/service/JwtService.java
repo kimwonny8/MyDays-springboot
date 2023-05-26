@@ -1,7 +1,7 @@
-package com.mydays.backend.global.jwt.service;
+package com.mydays.backend.global.security.jwt.service;
 
 import com.mydays.backend.domain.user.dto.LoginResponseDto;
-import com.mydays.backend.global.jwt.JwtTokenProvider;
+import com.mydays.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

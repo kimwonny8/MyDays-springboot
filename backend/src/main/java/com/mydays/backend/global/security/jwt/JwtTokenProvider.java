@@ -1,7 +1,6 @@
-package com.mydays.backend.global.jwt;
+package com.mydays.backend.global.security.jwt;
 
 import com.mydays.backend.domain.user.dto.LoginResponseDto;
-import com.mydays.backend.domain.user.entity.Authority;
 import com.mydays.backend.domain.user.entity.Member;
 import com.mydays.backend.domain.user.repository.MemberRepository;
 import io.jsonwebtoken.*;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,7 +27,7 @@ public class JwtTokenProvider {
 
     private final MemberRepository memberRepository;
     private final Key key;
-    private final int DATE = 5000;
+    private final int DATE = 7200000;
 
     public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
