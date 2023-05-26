@@ -1,4 +1,4 @@
-package com.mydays.backend.global.jwt;
+package com.mydays.backend.global.security;
 
 import com.mydays.backend.domain.user.entity.Authority;
 import com.mydays.backend.domain.user.entity.Member;

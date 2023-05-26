@@ -66,9 +66,8 @@ const store = createStore({
     setAccessToken(state, _accessToken) {
       state.accessToken = _accessToken;
     },
-    setUser(state, payload) {
-      state.user.id = payload.id;
-      state.user.name = payload.name;
+    setUser(state, _email) {
+      state.user.email =_email;
     },
     setDiary(state, payload) {
       state.diary.diaryIdx = payload.diaryIdx;

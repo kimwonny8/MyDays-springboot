@@ -4,7 +4,7 @@ import com.mydays.backend.domain.user.dto.MemberDto;
 import com.mydays.backend.domain.user.dto.LoginRequestDto;
 import com.mydays.backend.domain.user.entity.Authority;
 import com.mydays.backend.domain.user.entity.Member;
-import com.mydays.backend.global.jwt.JwtTokenProvider;
+import com.mydays.backend.global.security.jwt.JwtTokenProvider;
 import com.mydays.backend.domain.user.dto.LoginResponseDto;
 import com.mydays.backend.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Service

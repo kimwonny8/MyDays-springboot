@@ -31,7 +31,6 @@ public class DiaryService {
 
     public List<Diary> diaryList(String email){
         List<Diary> diaryList = diaryRepository.findAllByEmail(email);
-        //System.out.println("서비스: "+diaryList.size());
         return diaryList;
     }
 
@@ -43,7 +42,6 @@ public class DiaryService {
     public Long selectDate(String date){
         List<Diary> diaryList = diaryRepository.findAllByDate(date);
         Long idx = diaryList.get(0).getDiaryIdx();
-//        System.out.println(idx);
         return idx;
     }
 
@@ -52,16 +50,8 @@ public class DiaryService {
         try {
             diaryRepository.deleteByDiaryIdx(diaryIdx);
             System.out.println("삭제 완료");
-        }catch(Exception e){
+        } catch(Exception e){
             System.out.println(e);
-        }
-    }
-
-    public String chkDiary(String email, String date){
-        if(!diaryRepository.existsByEmailAndDate(email, date)){
-            return null;
-        } else {
-            throw new DuplicateException();
         }
     }
 

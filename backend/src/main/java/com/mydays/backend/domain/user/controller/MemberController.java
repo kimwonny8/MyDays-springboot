@@ -4,7 +4,7 @@ import com.mydays.backend.domain.user.dto.MemberDto;
 import com.mydays.backend.domain.user.dto.LoginRequestDto;
 import com.mydays.backend.domain.user.dto.LoginResponseDto;
 import com.mydays.backend.domain.user.service.MemberService;
-import com.mydays.backend.global.jwt.filter.JwtAuthenticationFilter;
+import com.mydays.backend.global.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

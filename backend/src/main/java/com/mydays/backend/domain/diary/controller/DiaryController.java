@@ -25,7 +25,6 @@ public class DiaryController {
     public List<Diary> allList(@RequestParam("email") String email){
         List<Diary> diaryList = diaryService.diaryList(email);
         return diaryList;
-
     }
 
     @GetMapping("/{diaryIdx}")
@@ -47,12 +46,6 @@ public class DiaryController {
     public void deleteDiary(@PathVariable("diaryIdx") Long diaryIdx){
         System.out.println(diaryIdx);
         diaryService.deleteDiary(diaryIdx);
-    }
-
-    @PostMapping("/update/duplChk")
-    public String duplChkDate(@RequestBody Map<String, String> params){
-        String chk = diaryService.chkDiary(params.get("email"), params.get("date"));
-        return chk;
     }
 
     @CrossOrigin

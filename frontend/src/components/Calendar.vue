@@ -1,9 +1,7 @@
 <template>
   <div>
-    <button @click="logout()">로그아웃</button>
     <!-- 상단 메뉴부분  -->
     <div class="monthChange">
-      <!-- 현재 년, 달 적혀있는 div -->
       <div class="currentYM">
         <button class="currentYMBtn" @click="calendarData(-1)">◀</button>
         {{ year }}년 {{ month }}월
@@ -16,22 +14,19 @@
     </div>
     <!-- 달력부분 -->
     <table class="calender">
-      <!-- 요일 day -->
       <thead>
         <th v-for="day in days" :key="day">{{ day }}</th>
       </thead>
 
-      <!-- 하루 date -->
       <tbody>
         <tr v-for="(date, idx) in dates" :key="idx">
-          <!-- 오늘날짜에 파란색 -->
-          <td v-for="(day, secondIdx) in date" :key="secondIdx" :class="{
+          <td v-for="(day, secondIdx) in date" :key="secondIdx" 
+          :class="{
             colorWhite:
               (idx === 0 && day >= lastMonthStart) ||
               (dates.length - 1 === idx && nextMonthStart > day),
             colorBlue:
-              day === today && month === currentMonth && year === currentYear
-          }">
+              day === today && month === currentMonth && year === currentYear }">
             <div class="oneDay" @click="selectDiary(day)">{{ day }}
               <div v-if="chkExercise(day)" class="dayBox exerciseBox">
                 {{ exercise }}
@@ -73,46 +68,19 @@ export default {
       month: 0,
       today: 0,
       diaryList: [],
-      email: sessionStorage.getItem("email"),
+      email: this.$store.state.user.email,
       face: null,
       exercise: null,
     };
   },
   async created() {
-    try {
-      const res = await axios.get("/api/v1/diary", {
-        params: { email: this.email },
-        headers: this.$store.getters.headers
-      });
-
-      for (let i = 0; i < res.data.length; i++) {
-        this.diaryList[i] = res.data[i];
-      }
-    } catch (err) {
-      console.log(err);
-
-      if (err.response && err.response.status === 401) {
-        try {
-          await this.$store.dispatch('getAccessToken');
-          const res = await axios.get("/api/v1/diary", {
-            params: { email: this.email },
-            headers: this.$store.getters.headers
-          });
-
-          for (let i = 0; i < res.data.length; i++) {
-            this.diaryList[i] = res.data[i];
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
+    await this.getDiary();
     const date = new Date();
-    this.currentYear = date.getFullYear(); // 이하 현재 년, 월 가지고 있기
+    this.currentYear = date.getFullYear();
     this.currentMonth = date.getMonth() + 1;
     this.year = this.currentYear;
     this.month = this.currentMonth;
-    this.today = date.getDate(); // 오늘 날짜
+    this.today = date.getDate();
     this.calendarData();
 
     this.name = localStorage.getItem("name");
@@ -124,12 +92,29 @@ export default {
     }
   },
   methods: {
-    logout() {
-      store.commit('setRefreshToken', null);
-      store.commit('setAccessToken', null);
-      alert('로그아웃 되었습니다.');
+    async getDiary() {
+      try {
+        const res = await axios.get("/api/v1/diary", {
+          params: { email: this.email },
+          headers: this.$store.getters.headers
+        });
+        for (let i = 0; i < res.data.length; i++) {
+          this.diaryList[i] = res.data[i];
+        }
+      }
+      catch (err) {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          try {
+            await this.$store.dispatch('getAccessToken');
+            await this.getDiary();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
     },
-    selectDiary(arg) {
+    async selectDiary(arg) {
       let date;
       if (arg < 10) {
         date = this.totalDate + "-0" + arg;
@@ -139,16 +124,26 @@ export default {
       }
 
       console.log(date);
-      axios.get("/api/v1/diary/date/" + date, { headers: this.headers })
-        .then((res) => {
-          console.log(res.data[0]);
-          store.commit("setDiary", res.data[0]);
-          sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
-          router.push("/selectDiary");
-        })
-        .catch((err) => {
-          alert("등록된 일기가 없습니다.")
-        });
+      const res = await axios.get("/api/v1/diary/date/" + date, {
+        headers: this.$store.getters.headers
+      })
+      try {
+        console.log(res.data[0]);
+        store.commit("setDiary", res.data[0]);
+        sessionStorage.setItem("diaryIdx", store.state.diary.diaryIdx);
+        router.push("/selectDiary");
+      }
+      catch (err) {
+        if (err.response && err.response.status === 401) {
+          try {
+            await this.$store.dispatch('getAccessToken');
+            await this.selectDiary(arg);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        else alert("등록된 일기가 없습니다.")
+      };
     },
     chkDiary(arg) {
       let day = 0;
@@ -191,19 +186,15 @@ export default {
     // 달력 찍기
     calendarData(arg) {
       if (arg < 0) {
-        // -1이 들어오면 지난 달 달력으로 이동
         this.month -= 1;
       } else if (arg === 1) {
-        // 1이 들어오면 다음 달 달력으로 이동
         this.month += 1;
       }
 
       if (this.month === 0) {
-        // 작년 12월
         this.year -= 1;
         this.month = 12;
       } else if (this.month > 12) {
-        // 내년 1월
         this.year += 1;
         this.month = 1;
       }
@@ -221,15 +212,15 @@ export default {
       );
     },
     getFirstDayLastDate(year, month) {
-      const firstDay = new Date(year, month - 1, 1).getDay(); // 이번 달 시작 요일
-      const lastDate = new Date(year, month, 0).getDate(); // 이번 달 마지막 날짜
+      const firstDay = new Date(year, month - 1, 1).getDay();
+      const lastDate = new Date(year, month, 0).getDate();
       let lastYear = year;
       let lastMonth = month - 1;
       if (month === 1) {
         lastMonth = 12;
         lastYear -= 1;
       }
-      const prevLastDate = new Date(lastYear, lastMonth, 0).getDate(); // 지난 달 마지막 날짜
+      const prevLastDate = new Date(lastYear, lastMonth, 0).getDate();
       return [firstDay, lastDate, prevLastDate];
     },
     getMonthOfDays(monthFirstDay, monthLastDate, prevMonthLastDate) {
@@ -239,17 +230,15 @@ export default {
       let weekOfDays = [];
       while (day <= monthLastDate) {
         if (day === 1) {
-          // 1일이 어느 요일인지에 따라 테이블에 그리기 위한 지난 셀의 날짜들을 구할 필요가 있다.
           for (let j = 0; j < monthFirstDay; j += 1) {
-            if (j === 0) this.lastMonthStart = prevDay; // 지난 달에서 제일 작은 날짜
+            if (j === 0) this.lastMonthStart = prevDay;
             weekOfDays.push("");
           }
         }
         weekOfDays.push(day);
         if (weekOfDays.length === 7) {
-          // 일주일 채우면
           dates.push(weekOfDays);
-          weekOfDays = []; // 초기화
+          weekOfDays = [];
         }
         day += 1;
       }
@@ -259,8 +248,8 @@ export default {
           weekOfDays.push("");
         }
       }
-      if (weekOfDays.length > 0) dates.push(weekOfDays); // 남은 날짜 추가
-      this.nextMonthStart = weekOfDays[0]; // 이번 달 마지막 주에서 제일 작은 날짜
+      if (weekOfDays.length > 0) dates.push(weekOfDays);
+      this.nextMonthStart = weekOfDays[0];
       return dates;
     }
   }

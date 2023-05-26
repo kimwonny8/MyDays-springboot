@@ -1,7 +1,6 @@
-package com.mydays.backend.global.jwt.filter;
+package com.mydays.backend.global.security.jwt.filter;
 
-import com.mydays.backend.domain.user.dto.LoginResponseDto;
-import com.mydays.backend.global.jwt.JwtTokenProvider;
+import com.mydays.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

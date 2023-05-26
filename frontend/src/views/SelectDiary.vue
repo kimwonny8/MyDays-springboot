@@ -14,9 +14,9 @@
 
     <!-- 수정하기 -->
     <div v-else class="postForm">
-      <p>날짜: <input type="date" v-model="diaryForm.date" disabled></p>
-      <p>내용: <input type="text" v-model="diaryForm.content"></p>
-      <p>운동: <input type="text" v-model="diaryForm.exercise"></p>
+      <p>날짜: <input type="date" v-model="diaryForm.date" disabled class="diary_date"></p>
+    <p>내용: <input type="text" v-model="diaryForm.content" class="diary_text"></p>
+    <p>운동: <input type="text" v-model="diaryForm.exercise" class="diary_text"></p>
       <div class="selectFace">
         <input type="radio" v-model="diaryForm.face" name="face" id="face_happy" value="행복해요"><label
           for="face_bad">😄</label>
@@ -46,7 +46,7 @@ export default {
       update: false,
       diaryForm: {
         diaryIdx: sessionStorage.getItem("diaryIdx"),
-        email: sessionStorage.getItem("email"),
+        email: this.$store.state.user.email,
         date: store.state.diary.date,
         content: store.state.diary.content,
         face: store.state.diary.face,
@@ -55,46 +55,56 @@ export default {
     }
   },
   methods: {
-    updateDiary(arg) {
-      axios.put("/api/v1/diary/" + arg, this.diaryForm, {
-        headers: {
-          'Authorization': `Bearer ${this.$store.state.token}`
-        }
-      })
-        .then(() => {
-          alert("수정이 완료되었습니다!");
-          router.push('/');
+    async updateDiary(arg) {
+      try {
+        await axios.put("/api/v1/diary/" + arg, this.diaryForm, {
+          headers: this.$store.getters.headers
         })
-        .catch(() => {
-          alert("수정에 실패하였습니다.")
-        })
-    },
-
-    deleteDiary(arg) {
-      let chk = confirm("정말 삭제하시겠습니까?");
-      if (chk) {
-        axios.delete('/api/v1/diary/' + arg, {
-          headers: {
-            'Authorization': `Bearer ${this.$store.state.token}`
+        alert("수정이 완료되었습니다!");
+        router.push('/');
+      }
+      catch (err) {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          try {
+            await this.$store.dispatch('getAccessToken');
+            await this.updateDiary(arg);
+          } catch (err) {
+            console.log(err);
           }
-        })
-          .then((res) => {
-            console.log(res);
-            localStorage.clear();
-            alert("삭제가 완료되었습니다.");
-            router.push('/');
-          })
-          .catch((e) => {
-            console.log(e);
-            alert("삭제에 실패하였습니다.");
-          })
-
+        }
       }
     },
 
+    async deleteDiary(arg) {
+      let chk = confirm("정말 삭제하시겠습니까?");
+      if (chk) {
+        try {
+          const res = await axios.delete('/api/v1/diary/' + arg, {
+            headers: this.$store.getters.headers
+          })
+          console.log(res);
+          localStorage.clear();
+          alert("삭제가 완료되었습니다.");
+          router.push('/');
+        } 
+        catch (err) {
+          console.log(err);
+          if (err.response && err.response.status === 401) {
+            try {
+              await this.$store.dispatch('getAccessToken');
+              await this.getDiary();
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
+      }
+    }
   }
 }
 </script>
-<style>.btns_50 {
+<style>
+.btns_50 {
   width: 50%;
 }</style>
