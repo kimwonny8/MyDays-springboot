@@ -13,9 +13,10 @@
 - Visual Studio Code
 - Vue2
 - Axios
-- Java 18
+- Java 17
 - Spring Boot 2.7.8
 - Spring Security
+- Jwt
 - Jpa
 - MariaDB
 
