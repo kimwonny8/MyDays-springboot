@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  FRONTEND_S3_BUCKET_NAME: www.wonny.kim
+  FRONTEND_S3_BUCKET_NAME: wonny.kim
   BACKEND_S3_BUCKET_NAME: mydays-deploy
 
 jobs:
