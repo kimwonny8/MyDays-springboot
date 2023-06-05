@@ -55,6 +55,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Set environment variables
+        env:
+          VUE_APP_API_PATH: ${{ secrets.VUE_DOTENV }}
+        run: echo "$VUE_DOTENV" > ./frontend/.env
+      
       - name: Copy Frontend files
         run: |
           mkdir -p deploy/frontend
