@@ -50,16 +50,20 @@ export default {
           });
           router.push('/');
           alert("일기가 작성되었습니다!");
-        } catch (err) {
+        }
+        catch (err) {
+          console.log(err);
           if (err.response && err.response.status === 401) {
-            const accessToken = await this.$store.dispatch('getAccessToken');
-            if (accessToken) {
-              await this.post();
-            } else {
-              console.log("토큰 가져오기 실패");
+            try {
+              const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+              if (accessTokenUpdated) {
+                await this.post();
+              } else {
+                store.commit('setAccessTokenAndUser', null);
+              }
+            } catch (err) {
+              console.log(err);
             }
-          } else {
-            alert("선택된 날짜에 이미 일기가 작성되어있습니다.");
           }
         }
       }
@@ -71,6 +75,7 @@ export default {
 * {
   font-family: 'KyoboHand', 'Avenir', Helvetica, Arial, sans-serif;
 }
+
 .postForm {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -87,7 +92,8 @@ export default {
 .selectFace>label {
   margin-right: 10px;
 }
-.diary_date{
+
+.diary_date {
   width: 130px;
   height: 30px;
   text-align: center;

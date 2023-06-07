@@ -93,13 +93,17 @@ export default {
         console.log(err);
         if (err.response && err.response.status === 401) {
           try {
-            await this.$store.dispatch('getAccessToken');
-            await this.getDiary();
+            const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+            if (accessTokenUpdated) {
+              await this.getDiary();
+            } else {
+              store.commit('setAccessTokenAndUser', null);
+            }
           } catch (err) {
             console.log(err);
           }
         }
-      };
+      }
     },
 
     async selectDiary(arg) {
@@ -116,8 +120,12 @@ export default {
         console.log(err);
         if (err.response && err.response.status === 401) {
           try {
-            await this.$store.dispatch('getAccessToken');
-            await this.selectDiary(arg);
+            const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+            if (accessTokenUpdated) {
+              await this.selectDiary(arg);
+            } else {
+              store.commit('setAccessTokenAndUser', null);
+            }
           } catch (err) {
             console.log(err);
           }

@@ -33,11 +33,9 @@ export default {
   },
   methods: {
     async login() {
-      await axios.post(`${process.env.VUE_APP_API_PATH}/api/v1/member`, this.form)
+      await axios.post("/api/v1/member", this.form)
         .then((res) => {
-          store.commit("setRefreshToken", res.data.refreshToken);
-          store.commit("setAccessToken", res.data.accessToken);
-          // sessionStorage.setItem("email", this.form.email);
+          store.commit("setAccessToken", res.data);
           store.commit("setUser", this.form.email);
 
           router.push('/');

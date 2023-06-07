@@ -14,9 +14,8 @@ import router from "@/scripts/router";
     name: 'Header',
     methods:{
       logout(){
-        store.commit('setRefreshtoken', null);
         store.commit('setAccessToken', null);
-        store.commit('setUser', {"id": 0, "name": null});
+        store.commit('setUser', null);
         alert('로그아웃 되었습니다.');
         router.push({path: "/"});
         sessionStorage.clear();

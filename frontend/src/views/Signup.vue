@@ -53,12 +53,12 @@ export default {
         alert("비밀번호가 일치하지 않습니다.");
       }
       else {
-        axios.post(`${process.env.VUE_APP_API_PATH}/api/v1/member/register`, this.form)
+        axios.post(`/api/v1/member/register`, this.form)
           .then((res) => {
             router.push({ path: "/" });
             alert("회원가입에 성공하였습니다.");
           }).catch(() => {
-            alert("이미 존재하는 아이디입니다.");
+            alert("회원가입 오류");
           });
       }
     }

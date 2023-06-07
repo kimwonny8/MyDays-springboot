@@ -15,8 +15,8 @@
     <!-- 수정하기 -->
     <div v-else class="postForm">
       <p>날짜: <input type="date" v-model="diaryForm.date" disabled class="diary_date"></p>
-    <p>내용: <input type="text" v-model="diaryForm.content" class="diary_text"></p>
-    <p>운동: <input type="text" v-model="diaryForm.exercise" class="diary_text"></p>
+      <p>내용: <input type="text" v-model="diaryForm.content" class="diary_text"></p>
+      <p>운동: <input type="text" v-model="diaryForm.exercise" class="diary_text"></p>
       <div class="selectFace">
         <input type="radio" v-model="diaryForm.face" name="face" id="face_happy" value="행복해요"><label
           for="face_bad">😄</label>
@@ -67,8 +67,12 @@ export default {
         console.log(err);
         if (err.response && err.response.status === 401) {
           try {
-            await this.$store.dispatch('getAccessToken');
-            await this.updateDiary(arg);
+            const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+            if (accessTokenUpdated) {
+              await this.updateDiary(arg);
+            } else {
+              store.commit('setAccessTokenAndUser', null);
+            }
           } catch (err) {
             console.log(err);
           }
@@ -87,13 +91,17 @@ export default {
           localStorage.clear();
           alert("삭제가 완료되었습니다.");
           router.push('/');
-        } 
+        }
         catch (err) {
           console.log(err);
           if (err.response && err.response.status === 401) {
             try {
-              await this.$store.dispatch('getAccessToken');
-              await this.getDiary();
+              const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+              if (accessTokenUpdated) {
+                await this.deleteDiary(arg);
+              } else {
+                store.commit('setAccessTokenAndUser', null);
+              }
             } catch (err) {
               console.log(err);
             }
@@ -107,4 +115,5 @@ export default {
 <style>
 .btns_50 {
   width: 50%;
-}</style>
+}
+</style>

@@ -20,13 +20,13 @@
 
       <tbody>
         <tr v-for="(date, idx) in dates" :key="idx">
-          <td v-for="(day, secondIdx) in date" :key="secondIdx" 
-          :class="{
+          <td v-for="(day, secondIdx) in date" :key="secondIdx" :class="{
             colorWhite:
               (idx === 0 && day >= lastMonthStart) ||
               (dates.length - 1 === idx && nextMonthStart > day),
             colorBlue:
-              day === today && month === currentMonth && year === currentYear }">
+              day === today && month === currentMonth && year === currentYear
+          }">
             <div class="oneDay" @click="selectDiary(day)">{{ day }}
               <div v-if="chkExercise(day)" class="dayBox exerciseBox">
                 {{ exercise }}
@@ -106,8 +106,12 @@ export default {
         console.log(err);
         if (err.response && err.response.status === 401) {
           try {
-            await this.$store.dispatch('getAccessToken');
-            await this.getDiary();
+            const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+            if (accessTokenUpdated) {
+              await this.getDiary();
+            } else {
+              store.commit('setAccessTokenAndUser', null);
+            }
           } catch (err) {
             console.log(err);
           }
@@ -134,10 +138,15 @@ export default {
         router.push("/selectDiary");
       }
       catch (err) {
+        console.log(err);
         if (err.response && err.response.status === 401) {
           try {
-            await this.$store.dispatch('getAccessToken');
-            await this.selectDiary(arg);
+            const accessTokenUpdated = await this.$store.dispatch("getAccessToken");
+            if (accessTokenUpdated) {
+              await this.selectDiary(arg);
+            } else {
+              store.commit('setAccessTokenAndUser', null);
+            }
           } catch (err) {
             console.log(err);
           }

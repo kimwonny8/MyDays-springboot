@@ -1,13 +1,13 @@
 import { createStore } from "vuex";
 import { createVuexPersistedState } from "vue-persistedstate";
 import axios from "axios";
+import router from "@/scripts/router";
 
 const store = createStore({
   plugins: [createVuexPersistedState()],
   state() {
     return {
       accessToken: null,
-      refreshToken: null,
       user: {
         id: 0,
         email: null,
@@ -33,41 +33,31 @@ const store = createStore({
     },
   },
   actions: {
-    getAccessToken({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            "/api/v2/jwt",
-            {},
-            {
-              headers: {
-                "Authorization-refresh": "Bearer " + state.refreshToken,
-              },
-            }
-          )
-          .then((res) => {
-            const bearerToken = res.headers["authorization"];
-            const accessToken = bearerToken.substring(7);
-            commit("setAccessToken", accessToken);
-            console.log("accessToken 발급 완료" + accessToken);
-            resolve(true);
-          })
-          .catch((err) => {
-            console.log("accessToken 발급 실패" + err);
-            reject(false);
-          });
-      });
+    async getAccessToken({ commit }) {
+      try {
+        const response = await axios.post("/api/v2/jwt");
+        const accessToken = response.data.accessToken;
+        commit("setAccessToken", accessToken);
+        console.log("Access Token 발급 완료: " + accessToken);
+        return true;
+      } catch (error) {
+        console.log("Access Token 발급 실패: " + error);
+        return false;
+      }
     },
   },
   mutations: {
-    setRefreshToken(state, _refreshToken) {
-      state.refreshToken = _refreshToken;
-    },
     setAccessToken(state, _accessToken) {
       state.accessToken = _accessToken;
     },
     setUser(state, _email) {
-      state.user.email =_email;
+      state.user.email = _email;
+    },
+    setAccessTokenAndUser(state, accessToken) {
+      state.accessToken = accessToken;
+      state.user.email = null;
+      alert('세션 만료로 로그아웃 되었습니다. 다시 로그인 후 이용해주세요');
+      location.href="/";
     },
     setDiary(state, payload) {
       state.diary.diaryIdx = payload.diaryIdx;

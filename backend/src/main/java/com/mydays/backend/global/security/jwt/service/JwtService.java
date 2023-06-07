@@ -12,19 +12,21 @@ import org.springframework.stereotype.Service;
 public class JwtService {
     private final JwtTokenProvider jwtTokenProvider;
 
-    public ResponseEntity<LoginResponseDto> reToken(String refreshToken){if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<LoginResponseDto> reToken(String refreshToken) {
         try {
+            if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+                throw new RuntimeException("Refresh token expired");
+            }
+
             String accessToken = jwtTokenProvider.generateAccessToken(refreshToken);
-            System.out.println("access="+accessToken);
             LoginResponseDto loginResponseDto = LoginResponseDto.builder()
                     .grantType("Bearer")
                     .accessToken(accessToken)
                     .build();
             return ResponseEntity.ok(loginResponseDto);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
 }

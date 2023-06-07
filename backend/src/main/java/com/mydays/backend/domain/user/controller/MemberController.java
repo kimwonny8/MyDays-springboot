@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,13 +26,21 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping
-    public LoginResponseDto login(@RequestBody LoginRequestDto dto) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto dto,  HttpServletResponse response) {
         LoginResponseDto loginResponseDto = memberService.login(dto);
+
+        Cookie refreshTokenCookie = new Cookie("refreshToken", loginResponseDto.getRefreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(false);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setDomain("localhost");
+        refreshTokenCookie.setMaxAge(14 * 24 * 60 * 60);
+        response.addCookie(refreshTokenCookie);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER,"Bearer "+loginResponseDto.getAccessToken());
 
-        return loginResponseDto;
+        return new ResponseEntity<>(loginResponseDto.getAccessToken(), HttpStatus.OK);
     }
 
     @PostMapping("/register")

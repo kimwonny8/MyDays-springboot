@@ -27,7 +27,8 @@ public class JwtTokenProvider {
 
     private final MemberRepository memberRepository;
     private final Key key;
-    private final int DATE = 7200000;
+    private final int ACCESS_TOKEN_SECOND = 60 * 30 * 1000;
+    private long REFRESH_TOKEN_SECOND = 60 * 60 * 24 * 14 * 1000 ;
 
     public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -42,7 +43,7 @@ public class JwtTokenProvider {
 
         long now = System.currentTimeMillis();
 
-        Date accessTokenExpiresIn = new Date(now + DATE);
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_SECOND);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
@@ -50,7 +51,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        Date refreshTokenExpiresIn = new Date(now + 1209600000);
+        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_SECOND);
         String refreshToken = Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -74,7 +75,7 @@ public class JwtTokenProvider {
                     .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
                     .collect(Collectors.toList());
 
-            Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + DATE);
+            Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + ACCESS_TOKEN_SECOND);
             String newAccessToken = Jwts.builder()
                     .setSubject(username)
                     .claim("auth", authorities.stream()
@@ -131,10 +132,14 @@ public class JwtTokenProvider {
     }
 
     public boolean validateRefreshToken(String refreshToken) {
-        Optional<Member> memberOptional = memberRepository.findByRefreshToken(refreshToken);
-        return memberOptional.isPresent() && memberOptional.get().getRefreshToken().equals(refreshToken);
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken);
+            return true;
+        } catch (ExpiredJwtException e) {
+            // refreshToken이 만료된 경우 예외 처리
+            return false;
+        }
     }
-
 
     public Member getMemberByRefreshToken(String refreshToken) {
         Optional<Member> memberOptional = memberRepository.findByRefreshToken(refreshToken);
