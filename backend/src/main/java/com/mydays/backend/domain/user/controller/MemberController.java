@@ -37,9 +37,6 @@ public class MemberController {
         refreshTokenCookie.setMaxAge(14 * 24 * 60 * 60);
         response.addCookie(refreshTokenCookie);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER,"Bearer "+loginResponseDto.getAccessToken());
-
         return new ResponseEntity<>(loginResponseDto.getAccessToken(), HttpStatus.OK);
     }
 
