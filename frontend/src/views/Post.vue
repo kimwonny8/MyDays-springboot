@@ -45,7 +45,7 @@ export default {
       }
       else {
         try {
-          await axios.post("/api/v1/diary", this.diaryForm, {
+          await axios.post(`${VUE_APP_API_PATH}/api/v1/diary`, this.diaryForm, {
             headers: this.$store.getters.headers
           });
           router.push('/');

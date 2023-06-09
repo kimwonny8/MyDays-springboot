@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     async login() {
-      await axios.post("/api/v1/member", this.form)
+      await axios.post(`${VUE_APP_API_PATH}/api/v1/member`, this.form)
         .then((res) => {
           store.commit("setAccessToken", res.data);
           store.commit("setUser", this.form.email);
