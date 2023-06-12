@@ -12,6 +12,7 @@
       </div>
       <div class="btns">
         <button @click="login()" class="submitBtn">로그인</button>
+        <button @click="loginGet()" class="submitBtn">로그인테스트</button>
         <router-link to="/signup" class="submitBtn">회원가입</router-link>
       </div>
     </div>
@@ -33,7 +34,19 @@ export default {
   },
   methods: {
     async login() {
-      await axios.post(`${VUE_APP_API_PATH}/api/v1/member`, this.form)
+      await axios.post(`${process.env.VUE_APP_API_PATH}/api/v1/member`, this.form)
+        .then((res) => {
+          store.commit("setAccessToken", res.data);
+          store.commit("setUser", this.form.email);
+
+          router.push('/');
+          alert("로그인하였습니다.");
+        }).catch(() => {
+          alert("로그인 정보가 존재하지 않습니다.");
+        });
+    },
+    async loginGet() {
+      await axios.get(`${process.env.VUE_APP_API_PATH}/api/v1/member`, this.form)
         .then((res) => {
           store.commit("setAccessToken", res.data);
           store.commit("setUser", this.form.email);
