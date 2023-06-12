@@ -57,7 +57,7 @@ export default {
   methods: {
     async updateDiary(arg) {
       try {
-        await axios.put(`${VUE_APP_API_PATH}/api/v1/diary/` + arg, this.diaryForm, {
+        await axios.put(`${process.env.VUE_APP_API_PATH}/api/v1/diary/` + arg, this.diaryForm, {
           headers: this.$store.getters.headers
         })
         alert("수정이 완료되었습니다!");
@@ -84,7 +84,7 @@ export default {
       let chk = confirm("정말 삭제하시겠습니까?");
       if (chk) {
         try {
-          const res = await axios.delete(`${VUE_APP_API_PATH}/api/v1/diary/` + arg, {
+          const res = await axios.delete(`${process.env.VUE_APP_API_PATH}/api/v1/diary/` + arg, {
             headers: this.$store.getters.headers
           })
           console.log(res);

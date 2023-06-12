@@ -76,7 +76,7 @@ export default {
     },
     async getDiary() {
       try {
-        const res = await axios.get(`${VUE_APP_API_PATH}/api/v1/diary`, {
+        const res = await axios.get(`${process.env.VUE_APP_API_PATH}/api/v1/diary`, {
           params: { email: this.email },
           headers: this.$store.getters.headers
         })
@@ -108,7 +108,7 @@ export default {
 
     async selectDiary(arg) {
       try {
-        const res = await axios.get(`${VUE_APP_API_PATH}/api/v1/diary/` + arg, {
+        const res = await axios.get(`${process.env.VUE_APP_API_PATH}/api/v1/diary/` + arg, {
           headers: this.$store.getters.headers
         });
         console.log(res.data[0]);
