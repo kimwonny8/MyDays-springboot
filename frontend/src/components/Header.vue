@@ -9,11 +9,13 @@
 <script>
 import store from "@/scripts/store";
 import router from "@/scripts/router";
+import axios from "axios";
 
   export default {
     name: 'Header',
     methods:{
-      logout(){
+      async logout(){
+        await axios.get(`${process.env.VUE_APP_API_PATH}/api/v1/member`)
         store.commit('setAccessToken', null);
         store.commit('setUser', null);
         alert('로그아웃 되었습니다.');

@@ -37,25 +37,18 @@ public class MemberController {
         return new ResponseEntity<>(loginResponseDto.getAccessToken(), HttpStatus.OK);
     }
 
-
-    public ResponseEntity<?> login2(@RequestBody LoginRequestDto dto,  HttpServletResponse response) {
-        LoginResponseDto loginResponseDto = memberService.login(dto);
-
-        Cookie refreshTokenCookie = new Cookie("refreshToken", loginResponseDto.getRefreshToken());
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setDomain("localhost");
-        refreshTokenCookie.setMaxAge(14 * 24 * 60 * 60);
-        response.addCookie(refreshTokenCookie);
-
-        return new ResponseEntity<>(loginResponseDto.getAccessToken(), HttpStatus.OK);
-    }
-
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody MemberDto dto) throws Exception {
         memberService.register(dto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping
+    public void logout(HttpServletResponse response){
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setPath("/");
+        cookie.setDomain("localhost");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
 }
